@@ -1,6 +1,6 @@
 body {
-  font-family: "Roboto", sans-serif;
-  background-color: #f8fafb; }
+  font-family: 'Poppins', sans-serif;
+  background-color: #e4eef8; }
 
 p {
   color: #b3b3b3;
@@ -10,6 +10,9 @@ h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   font-family: "Roboto", sans-serif; }
 
+.navbar{
+  margin-top: 15px;
+}
 a {
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
@@ -210,9 +213,139 @@ h2 {
   font-size: 22pt;
 }
 
+.logo-img{
+  width: 150px;
+  height: 100%;
+  margin-left: 50px;
+}
+.heading{
+  text-align: center;
+  font-weight: lighter;
+}
+.subhead{
+    text-align: center;
+    font-weight: bolder;
+}
+.add-btn{
+  color: black;
+  border: none;
+  background-color: rgb(17, 67, 206);
+  color: white;
+  border-radius: 0.5rem;
+  padding: 0.5rem 3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  
+}
+.add-btn:hover{
+  background-color: rgb(216, 226, 255);
+  color: rgb(17, 67, 206);
+  border: rgb(17, 67, 206);
+}
+
+.center-space{
+  text-align: center;
+  margin-top: 30px;
+}
+
+
+
+
+.testimonial.container{
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+.testimonial .heading {
+  margin-bottom: 1rem;
+}
+.testimonial h3 {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+.testimonial-data {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.t-img {
+  width: 100%;
+  height: 280px;
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+
+
+.t-img img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.t-img .bx {
+  font-size: 1.2rem;
+  position: absolute;
+  bottom: -1.2rem;
+  right: 1rem;
+  padding: 15px;
+  color: var(--bg-color);
+  background: #d1a670;
+}
+
+.t-box h2 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.t-box p {
+  font-size: 1.02rem;
+}
+
+
+
+@media (max-width: 875px) {
+  
+  .testimonial-data {
+    grid-template-columns: repeat(2, 1fr);
+  }
+ 
+}
+
 @media (min-width: 768px) { 
   .logo-img{
     margin-right: auto;
+  }
+}
+
+
+@media (max-width: 445px) {
+
+  .logo-img{
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .testimonial-data,
+  .footer-container {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial.container {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+}
+
+@media (max-width: 385px) {
+  
+  .about-text h1,
+  .box-data h2,
+  .testimonial h3 {
+    font-size: 1.3rem;
   }
 }
 
