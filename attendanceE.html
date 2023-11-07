@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+   
+    <!-- Style -->
+    <link rel="stylesheet" href="css/attendance.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+    <script src="js/attendance.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Attendance</title>
+  </head>
+
+  
+    <body>
+
+        <nav class="navbar">
+            <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
+        </nav>
+
+        <main class="table">
+            <section class="table__header">
+                <h1>Attendance</h1>
+                <form class="d-flex" role="search" id="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchValue">
+                    <i class="fal fa-search"></i>
+                  </form>
+                  
+                <div class="export__file">
+                    <label for="export-file" class="export__file-btn" title="Export File"></label>
+                    <input type="checkbox" id="export-file">
+                    <div class="export__file-options">
+                        <label>Export As &nbsp; &#10140;</label>
+                        <label for="export-file" id="toPDF">PDF <img src="images/pdf.png" alt=""></label>
+                        <label for="export-file" id="toJSON">JSON <img src="images/json.png" alt=""></label>
+                        <label for="export-file" id="toCSV">CSV <img src="images/csv.png" alt=""></label>
+                        <label for="export-file" id="toEXCEL">EXCEL <img src="images/excel.png" alt=""></label>
+                    </div>
+                </div>
+            </section>
+            <section class="table__body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th> Id <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Employee <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Department <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Date <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Clock In Time <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Clock Out Time <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Status <span class="icon-arrow">&UpArrow;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> 1 </td>
+                            <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
+                            <td> Sales </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:44:52 AM </td>
+                            <td> 05:55:07 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 2 </td>
+                            <td><img src="images/Jeet Saru.jpg" alt=""> Jeet Saru </td>
+                            <td> Human Resource </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 09:05:22 AM </td>
+                            <td> 06:51:27 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 3</td>
+                            <td><img src="images/Sonal Gharti.jpg" alt=""> Sonal Gharti </td>
+                            <td> Human Resource </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 09:05:22 AM </td>
+                            <td> 06:51:27 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 4</td>
+                            <td><img src="images/Alson GC.jpg" alt=""> Alson GC </td>
+                            <td> Marketing </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:15:42 AM </td>
+                            <td> 06:53:09 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 5</td>
+                            <td><img src="images/Sarita Limbu.jpg" alt=""> Sarita Limbu </td>
+                            <td> Marketing </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:21:46 AM </td>
+                            <td> 06:58:28 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 6</td>
+                            <td><img src="images/Alex Gonley.jpg" alt=""> Alex Gonley </td>
+                            <td> Sales </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:24:46 AM </td>
+                            <td> 06:45:28 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 7</td>
+                            <td><img src="images/Alson GC.jpg" alt=""> Jeet Saru </td>
+                            <td> Security </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 09:11:36 AM </td>
+                            <td> 06:38:38 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 8</td>
+                            <td><img src="images/Sarita Limbu.jpg" alt=""> Aayat Ali Khan </td>
+                            <td> Security </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 09:34:16 AM </td>
+                            <td> 06:48:18 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 9</td>
+                            <td><img src="images/Vin Hee.jpg" alt=""> Vinhee W </td>
+                            <td> Security </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 09:36:36 AM </td>
+                            <td> 06:47:55 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td> 10</td>
+                            <td><img src="images/Sharon Selena.jpg" alt=""> Sharon Selena </td>
+                            <td> Security </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:56:36 AM </td>
+                            <td> 06:32:51 PM </td>
+                            <td>
+                                <p class="status absent">Absent</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </body>
+    
+    </html>

@@ -214,7 +214,7 @@ h2 {
 }
 
 .logo-img{
-  width: 150px;
+  width: 180px;
   height: 100%;
   margin-left: 50px;
 }
@@ -240,7 +240,7 @@ h2 {
 .add-btn:hover{
   background-color: rgb(216, 226, 255);
   color: rgb(17, 67, 206);
-  border: rgb(17, 67, 206);
+ 
 }
 
 .center-space{
@@ -248,6 +248,22 @@ h2 {
   margin-top: 30px;
 }
 
+.navbar i {
+  font-size: 1.2rem;
+  padding: 0 7px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s ease;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-right: 50px;
+}
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar i:hover,
+.navbar-light .navbar-nav .nav-link.active,
+.navbar i.active {
+    color: rgb(17, 67, 206);
+}
 
 
 
