@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css">
 
     <!-- Style -->
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/attendance.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
@@ -19,14 +20,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <script src="jquery-3.7.1.min.js"></script>
     <title>Attendance</title>
   </head>
   <body>
   
     
-  <nav class="navbar">
-    <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
-  </nav>
+    <header style="display: flex; margin-top: 20px;">
+        <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
+        </div>
+        <input type="checkbox" id="nav_check" hidden>
+        <nav>
+            <ul>
+                <li class="li-space">
+                    <a href="" class="active">Home</a>
+                </li>
+                <li class="li-space">
+                    <a href="">Logout</a>
+                </li>
+               
+            </ul>
+        </nav>
+        <label for="nav_check" class="hamburger">
+            
+              <div></div>
+              <div></div>
+              <div></div>
+           
+           
+        </label>
+    </header>
+    
  
     <main class="table">
         <section class="table__header">

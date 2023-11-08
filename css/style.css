@@ -1,3 +1,6 @@
+*{
+  font-family: 'Poppins', sans-serif;
+}
 body {
   font-family: 'Poppins', sans-serif;
   background-color: #e4eef8; }
@@ -212,8 +215,8 @@ h2 {
 }
 
 .logo-img{
-  width: 160px;
-  height: 100%;
+  width: 180px;
+  height: 57px;
   margin-left: 50px;
 }
 .heading{
@@ -233,6 +236,7 @@ h2 {
   padding: 0.5rem 3rem;
   font-size: 1rem;
   cursor: pointer;
+  font-family: 'Poppins', sans-serif;;
   
 }
 .add-btn:hover{
@@ -250,7 +254,7 @@ h2 {
 
 
 .testimonial.container{
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 40px;
 }
 .testimonial .heading {
@@ -324,6 +328,8 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 0 50px;
+  position: relative;
+  z-index: 1000;
 }
 header .logo {
   font-size: 30px;
@@ -342,7 +348,8 @@ header nav ul li a {
   transition: 0.2s;
   font-family: 'Poppins', sans-serif;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 12pt;
+ 
 }
 header nav ul li a:hover,
 header nav ul li a.active {
@@ -380,18 +387,28 @@ header nav ul li a.active {
       background: #fff;
       padding: 30px;
       transition: 0.3s;
-      margin-left: 50px;
-      margin-top: 20px;
+      margin-top: 10px;
+  }
+
+  .li-space{
+    margin-left: 60px;
+    margin-bottom: 10px;
   }
   header #nav_check:checked ~ nav {
       left: 0;
+     
   }
+
+
   header nav ul {
       display: block;
   }
   header nav ul li a {
       margin: 5px 0;
   }
+
+ 
+
 }
 
 
@@ -597,6 +614,10 @@ header nav ul li a.active {
     margin-top: 50px;
     margin-bottom: 50px;
 }
+  .li-space{
+    margin-left: 20px;
+  }
+
 }
 
 @media (max-width: 385px) {
