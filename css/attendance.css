@@ -6,6 +6,9 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.w-clr{
+    color: white;
+}
 .navbar{
     margin-top: 15px;
   }
@@ -328,3 +331,7 @@ thead th.active,tbody td.active {
     width: 2rem;
     height: auto;
 }
+
+
+/* navbar */
+
