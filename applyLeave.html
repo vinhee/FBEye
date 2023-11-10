@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/applyLeave.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">                  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Home</title>
+  </head>
+  <body>
+  
+    <!-- ORIGINAL NAVBAR -->
+  <!-- <nav class="navbar">
+    <img src="images/FBEYE.png" class="logo-img">
+    <i onclick="window.location.href='profile.html';" class="fal fa-user" id="profileIcon"></i>
+  </nav> -->
+  <header style="display: flex; margin-top: 20px;">
+    <img src="images/FBEYE.png" class="logo-img">
+    </div>
+    <input type="checkbox" id="nav_check" hidden>
+    <nav>
+        <ul>
+            <li>
+                <a href="" class="active">Home</a>
+            </li>
+            <li>
+                <a href="">Logout</a>
+            </li>
+           
+        </ul>
+    </nav>
+    <label for="nav_check" class="hamburger">
+        
+          <div></div>
+          <div></div>
+          <div></div>
+       
+       
+    </label>
+</header>
+
+<div class="container" style="max-width: 600px;">
+    <div class="text">
+      Submit MC/Leave Request
+    </div>
+    <form action="#">
+       <div class="form-row">
+          <div class="input-data">
+             <input type="text" required>
+             <div class="underline"></div>
+             <label for="">Name</label>
+          </div>
+          <div class="input-data">
+             <input type="text" required>
+             <div class="underline"></div>
+             <label for="">Employee ID</label>
+          </div>
+       </div>
+       <div class="form-row">
+          <div class="input-data">
+             <span> Start Date</span><input type="date" required style="padding-bottom: 13px;">
+             <div class="underline"></div>
+          </div>
+          <div class="input-data">
+            <span> End Date</span><input type="date" required style="padding-bottom: 13px;">
+            <div class="underline"></div>
+          </div>
+       </div>
+       <div class="form-row">
+       <div class="input-data textarea">
+          <textarea rows="8" cols="80" required></textarea>
+          <br />
+          <div class="underline"></div>
+          <label for="">Write your message</label>
+          <br />
+          <div class="form-row submit-btn">
+             <div class="input-data">
+                <div class="inner"></div>
+                <input type="submit" value="submit">
+          </div>
+       </div>
+      </div>
+         
+    </form>
+   </div>
+
+    
+  
+    <script src="js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        $(".carousel").owlCarousel({
+          margin: 20,
+          loop: true,
+          autoplay: true,
+          autoplayTimeout: 2000,
+          autoplayHoverPause: true,
+          responsive: {
+            0:{
+              items:1,
+              nav: false
+            },
+            600:{
+              items:2,
+              nav: false
+            },
+            1000:{
+              items:3,
+              nav: false
+            }
+          }
+        });
+     </script>
+  </body>
+</html>
+
+
