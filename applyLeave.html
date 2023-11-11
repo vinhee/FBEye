@@ -63,8 +63,18 @@
       Submit MC/Leave Request
     </div>
     <form action="#">
+      <div class="form-row">
+          <label for="">Absence Reason</label>
+          
+    
+          <select name="leaveRequest" id="leaveRequest">
+            <option value="Submit MC">Submit MC</option>
+            <option value="Leave Request">Leave Request</option>       
+          </select> 
+          
+     </div>
        <div class="form-row">
-          <div class="input-data">
+          <div class="input-data" style="padding-top: 10px;">
              <input type="text" required>
              <div class="underline"></div>
              <label for="">Name</label>
@@ -95,7 +105,7 @@
            <input type="text" required>
            <div class="underline"></div>
            <label for="">Name of Clinic/Hospital</label>
-        </div>
+          </div>
      </div>
       
       <div class="form-row submit-btn">

@@ -109,14 +109,24 @@
     transform: scale(1);
   }
   
-  .submit-btn .input-data {
-
+  
+  
+  
+  
+  #leaveRequest {
+    width: 48%;
+    text-align-last: left;
+    box-sizing: border-box;
+    border: none;
+    outline: none; 
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px; 
+    transition: border-bottom-color 0.3s;
   }
   
-  
-  
- 
-  
+  #leaveRequest:focus {
+    border-bottom-color: #007bff; /* Change the underline color on focus */
+  }
   
 
   /* checkbox */
@@ -216,6 +226,10 @@
     .date-input{
       padding-bottom: 10px;
     }
+    #leaveRequest{
+      width: 100%;
+      text-align-last: left!important;
+     }
 
 
   }
