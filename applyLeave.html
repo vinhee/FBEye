@@ -63,7 +63,7 @@
     <div class="text">
       Submit MC/Leave Request
     </div>
-    <form action="#">
+    <form action="#" id="sendForm">
       <div class="form-row">
           <label for="">Absence Reason</label>
           
@@ -76,34 +76,34 @@
      </div>
        <div class="form-row" style="padding-top: 15px;">
           <div class="input-data">
-             <input type="text" required>
+             <input type="text" id="name" required>
              <div class="underline"></div>
              <label for="">Name</label>
           </div>
           <div class="input-data">
-             <input type="text" required>
+             <input type="text" id="employeeid" required>
              <div class="underline"></div>
              <label for="">Employee ID</label>
           </div>
        </div>
        <div class="form-row">
           <div class="input-data">
-             <span> Start Date</span><input type="date" required style="padding-bottom: 13px;">
+             <span> Start Date</span><input type="date" id="startDate" required style="padding-bottom: 13px;">
              <div class="underline"></div>
           </div>
           <div class="input-data">
-            <span> End Date</span><input type="date" required style="padding-bottom: 13px;">
+            <span> End Date</span><input type="date" id="endDate" required style="padding-bottom: 13px;">
             <div class="underline"></div>
           </div>
        </div>
        <div class="form-row mcField" style="padding-top: 15px;" id="mcForm">
         <div class="input-data mc-number">
-           <input type="text" required>
+           <input type="text" id="MCno" required>
            <div class="underline"></div>
            <label for="">MC Number</label>
         </div>
         <div class="input-data clinic-name">
-           <input type="text" required>
+           <input type="text" id="docPlace" required>
            <div class="underline"></div>
            <label for="">Name of Clinic/Hospital</label>
         </div>
