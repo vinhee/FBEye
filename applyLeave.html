@@ -24,7 +24,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">                  
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
-    <title>Home</title>
+    <link rel="icon" type="image/png" href="/images/logo.png"> 
+    <title> Submit MC/Leave Request</title>
   </head>
   <body>
   
@@ -68,13 +69,13 @@
           
     
           <select name="leaveRequest" id="leaveRequest">
-            <option value="Submit MC">Submit MC</option>
+            <option value="Submit MC">Submit MC</option>       
             <option value="Leave Request">Leave Request</option>       
           </select> 
           
      </div>
-       <div class="form-row">
-          <div class="input-data" style="padding-top: 10px;">
+       <div class="form-row" style="padding-top: 15px;">
+          <div class="input-data">
              <input type="text" required>
              <div class="underline"></div>
              <label for="">Name</label>
@@ -95,20 +96,26 @@
             <div class="underline"></div>
           </div>
        </div>
-       <div class="form-row">
-        <div class="input-data" style="padding-top: 10px;">
+       <div class="form-row mcField" style="padding-top: 15px;" id="mcForm">
+        <div class="input-data mc-number">
            <input type="text" required>
            <div class="underline"></div>
            <label for="">MC Number</label>
         </div>
-        <div class="input-data">
+        <div class="input-data clinic-name">
            <input type="text" required>
            <div class="underline"></div>
            <label for="">Name of Clinic/Hospital</label>
-          </div>
-     </div>
+        </div>
+
+      </div>
+     
+  
+
+     
+     
       
-      <div class="form-row submit-btn">
+      <div class="form-row submit-btn" style="padding-top: 40px;">
         <div class="checkbox-wrapper-28">
           <input id="tmp-28" type="checkbox" class="promoted-input-checkbox"/>
           <svg><use xlink:href="#checkmark-28" /></svg>
@@ -136,27 +143,44 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script>
-        $(".carousel").owlCarousel({
-          margin: 20,
-          loop: true,
-          autoplay: true,
-          autoplayTimeout: 2000,
-          autoplayHoverPause: true,
-          responsive: {
-            0:{
-              items:1,
-              nav: false
-            },
-            600:{
-              items:2,
-              nav: false
-            },
-            1000:{
-              items:3,
-              nav: false
-            }
-          }
-        });
+    $(document).ready(function(){
+    var leaveRequestSelect = $("#leaveRequest");
+  
+    
+
+    leaveRequestSelect.change(function(){
+        var selectOption = leaveRequestSelect.val();
+
+        if(selectOption === "Submit MC"){
+          $("#mcForm").empty();
+            $("#mcForm").append(`
+        <div class="input-data mc-number">
+           <input type="text" required>
+           <div class="underline"></div>
+           <label for="">MC Number</label>
+        </div>
+        <div class="input-data clinic-name">
+           <input type="text" required>
+           <div class="underline"></div>
+           <label for="">Name of Clinic/Hospital</label>
+        </div>`);
+
+        } else if(selectOption === "Leave Request"){
+            $("#mcForm").empty();
+            $("#mcForm").html(`
+        <div class="input-data reason-for-leave">
+          <input type="text" required>
+          <div class="underline"></div>
+          <label for="">Reason for Leave</label>
+        </div>
+    `);
+        }
+    });
+});
+
+
+
+
      </script>
   </body>
 </html>
