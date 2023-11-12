@@ -77,7 +77,8 @@ h2 {
     border: none;
     padding: 0;
     font-size: 20px;
-    border-radius: 0; }
+    border-radius: 0; 
+    font-family: 'Poppins';}
     .content .contents .form-control:active, .content .contents .form-control:focus, .content .bg .form-control:active, .content .bg .form-control:focus {
       outline: none;
       -webkit-box-shadow: none;
@@ -94,12 +95,14 @@ h2 {
 .content .btn {
   height: 54px;
   padding-left: 30px;
-  padding-right: 30px; }
+  padding-right: 30px; 
+  font-family: 'Poppins';}
 
 .content .forgot-pass {
   position: relative;
   top: 2px;
-  font-size: 14px; }
+  font-size: 14px; 
+  font-family: 'Poppins';}
 
 .social-login a {
   text-decoration: none;
