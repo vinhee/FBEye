@@ -323,8 +323,9 @@ h2 {
   box-sizing: border-box;
 }
 body {
-  background: dodgerblue;
+  background: white;
 }
+
 header {
   background: #fff;
   width: 100%;
