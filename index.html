@@ -113,7 +113,7 @@
   
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
-        signInWithEmailAndPassword(auth, email, password)
+        firebae.auth().signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             // Signed in 
             const user = userCredential.user;
