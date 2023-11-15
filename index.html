@@ -63,7 +63,7 @@
                 <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
               </div>
 
-              <input type="submit" id="login-btn" value="Log In" onclick="employeeLogin()" class="btn btn-block btn-primary">              
+              <input type="submit" id="login-btn" value="Log In" class="btn btn-block btn-primary">              
               
             </form>
             </div>
@@ -76,22 +76,22 @@
   </div>
 
   
-<script type="module" src="js/login.js"></script>
+    <script type="module" src="js/login.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js"></script>
-   </script>
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-      import { getDatabase, update, ref, get } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
-      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
-  
-      const firebaseConfig = {
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js"></script>
+</script>
+   <script type="module">
+// Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+    import { getDatabase, update, ref, get } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
         apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
         authDomain: "fbeye-bf2f1.firebaseapp.com",
         databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -101,92 +101,63 @@
         appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
         measurementId: "G-83NWPL2V92"
       };
-    
-      const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
-      const auth = getAuth();
 
-      const loginBtn = document.getElementById("login-btn");
-      // e.preventDefault();
-      // console.log("button clicked");
-      
-      loginBtn.addEventListener("click", function(e){
-        e.preventDefault();
-        var employeeEmail = document.getElementById("email").value;
-        var employeePassword = document.getElementById("password").value;
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
 
-        signInWithEmailAndPassword(auth, employeeEmail, employeePassword).then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
-          alert("Login Successfully!");
-          window.location.href = "home.html";
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorMessage);
-          alert(errorMessage);
-        })
-      })
-    
+    const loginBtn = document.getElementById("login-btn");
+    // e.preventDefault();
+    // console.log("button clicked");
 
+    loginBtn.addEventListener("click", function(e){
+      e.preventDefault();
+      var employeeEmail = document.getElementById("email").value;
+      var employeePassword = document.getElementById("password").value;
 
+      function ValidateEmail(employeeEmail){
+        const expression = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return expression.test(employeeEmail);
+      }
 
-
-
-
-//       function login(){
-  
-//         const email = document.getElementById("email").value;
-//         const password = document.getElementById("password").value;
-//         firebae.auth().signInWithEmailAndPassword(auth, email, password)
-//           .then((userCredential) => {
-//         // Signed in 
-//           const user = userCredential.user;
+      const validateEmail = employeeEmail;
+      if(ValidateEmail(validateEmail)){
+      signInWithEmailAndPassword(auth, employeeEmail, employeePassword).then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        alert("Login Successfully!");
+        
+        const employeeRef = ref(database, 'Employees/' + user.uid);
+          get(employeeRef).then((snapshot) => {
+            const employeeData = snapshot.val();
           
-//             const userRef = ref(database, 'Employees/' + user.uid);
-//             get(userRef).then((snapshot) => {
-//               const userData = snapshot.val();
-  
-//               if (userData && userData.Role) {
-//                 const dt = new Date();
-//                 update(ref(database, 'Employees/' + user.uid), {
-//                   last_login: dt,
-//                 });
-  
-//                 if (userData.Role === "Employee") {
-//                   alert("user login!");
-//                   window.location.href = "home.html";
-//                 }
-//                 else if (userData.Role === "Employer") {
-//                   window.location.href = "homeE.html";
-//                 }
-//               }
-  
-//               else {
-//                 alert("User role not found!");
-// }
-//         }).catch((error) => {
-//           const errorCode = error.code;
-//           const errorMessage = error.message;
-//           alert(errorMessage);
-//             });
-//           });
+              const dt = new Date();
+              update(ref(database, 'Employees/' + user.uid), {
+                last_login: dt,
+              });
 
-//       }
+              if (employeeData.Role === "Employee") {
+                window.location.href = "home.html";
+              }
+              else if (employeeData.Role === "Employer") {
+                window.location.href = "homeE.html";
+              }
+            
+  
+          })
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        alert(errorMessage);
+      })
+    }
+    else{
+      alert("Invalid Email Format!");
+    }
 
-//       function employeeLogin() {
-//     var email = document.getElementById("email").value;
-//     var password = document.getElementById("password").value;
-
-//     firebase.auth().signInWithEmailAndPassword(email, password)
-//       .then(function(user) {
-//         console.log("User signed in:", user);
-//       })
-//       .catch(function(error) {
-//         console.error("Sign-in error:", error);
-//       });
-//   }
+    })
 
 
 
