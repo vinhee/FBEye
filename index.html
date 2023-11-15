@@ -102,66 +102,91 @@
         measurementId: "G-83NWPL2V92"
       };
     
-            const app = initializeApp(firebaseConfig);
+      const app = initializeApp(firebaseConfig);
       const database = getDatabase(app);
       const auth = getAuth();
 
-      const login = document.getElementById("login-btn");
+      const loginBtn = document.getElementById("login-btn");
       // e.preventDefault();
       // console.log("button clicked");
+      
+      loginBtn.addEventListener("click", function(e){
+        e.preventDefault();
+        var employeeEmail = document.getElementById("email").value;
+        var employeePassword = document.getElementById("password").value;
 
-      function login(){
-  
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-        firebae.auth().signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-// Signed in 
+        signInWithEmailAndPassword(auth, employeeEmail, employeePassword).then((userCredential) => {
           const user = userCredential.user;
-          
-            const userRef = ref(database, 'Employees/' + user.uid);
-            get(userRef).then((snapshot) => {
-              const userData = snapshot.val();
-  
-              if (userData && userData.Role) {
-                const dt = new Date();
-                update(ref(database, 'Employees/' + user.uid), {
-                  last_login: dt,
-                });
-  
-                if (userData.Role === "Employee") {
-                  alert("user login!");
-                  window.location.href = "home.html";
-                }
-                else if (userData.Role === "Employer") {
-                  window.location.href = "homeE.html";
-                }
-              }
-  
-              else {
-                alert("User role not found!");
-}
-        }).catch((error) => {
+          console.log(user);
+          alert("Login Successfully!");
+          window.location.href = "home.html";
+        })
+        .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
+          console.log(errorMessage);
           alert(errorMessage);
-            });
-          });
-
-      }
-
-      function employeeLogin() {
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
-
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(function(user) {
-        console.log("User signed in:", user);
+        })
       })
-      .catch(function(error) {
-        console.error("Sign-in error:", error);
-      });
-  }
+    
+
+
+
+
+
+
+//       function login(){
+  
+//         const email = document.getElementById("email").value;
+//         const password = document.getElementById("password").value;
+//         firebae.auth().signInWithEmailAndPassword(auth, email, password)
+//           .then((userCredential) => {
+//         // Signed in 
+//           const user = userCredential.user;
+          
+//             const userRef = ref(database, 'Employees/' + user.uid);
+//             get(userRef).then((snapshot) => {
+//               const userData = snapshot.val();
+  
+//               if (userData && userData.Role) {
+//                 const dt = new Date();
+//                 update(ref(database, 'Employees/' + user.uid), {
+//                   last_login: dt,
+//                 });
+  
+//                 if (userData.Role === "Employee") {
+//                   alert("user login!");
+//                   window.location.href = "home.html";
+//                 }
+//                 else if (userData.Role === "Employer") {
+//                   window.location.href = "homeE.html";
+//                 }
+//               }
+  
+//               else {
+//                 alert("User role not found!");
+// }
+//         }).catch((error) => {
+//           const errorCode = error.code;
+//           const errorMessage = error.message;
+//           alert(errorMessage);
+//             });
+//           });
+
+//       }
+
+//       function employeeLogin() {
+//     var email = document.getElementById("email").value;
+//     var password = document.getElementById("password").value;
+
+//     firebase.auth().signInWithEmailAndPassword(email, password)
+//       .then(function(user) {
+//         console.log("User signed in:", user);
+//       })
+//       .catch(function(error) {
+//         console.error("Sign-in error:", error);
+//       });
+//   }
 
 
 
