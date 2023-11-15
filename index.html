@@ -63,7 +63,7 @@
                 <span class="ml-auto"><a href="#" class="forgot-pass" id="forgotPass" >Forgot Password</a></span> 
               </div>
 
-              <input type="submit" id="login-btn" value="Log In" onclick="employeeLogin()" class="btn btn-block btn-primary">              
+              <input type="submit" id="login-btn" value="Log In" class="btn btn-block btn-primary">              
               
             </form>
             </div>
@@ -76,22 +76,22 @@
   </div>
 
   
-<script type="module" src="js/login.js"></script>
+    <script type="module" src="js/login.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/main.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js"></script>
-   </script>
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-      import { getDatabase, update, ref, get } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
-      import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
-  
-      const firebaseConfig = {
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js"></script>
+</script>
+   <script type="module">
+// Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+    import { getDatabase, update, ref, get } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
         apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
         authDomain: "fbeye-bf2f1.firebaseapp.com",
         databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -101,14 +101,14 @@
         appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
         measurementId: "G-83NWPL2V92"
       };
-    
-      const app = initializeApp(firebaseConfig);
-      const database = getDatabase(app);
-      const auth = getAuth();
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
 
       const loginBtn = document.getElementById("login-btn");
-      const forgotPasswordLink = document.getElementById("forgotPassword");
-
+      // e.preventDefault();
+      // console.log("button clicked");
       
       loginBtn.addEventListener("click", function(e){
         e.preventDefault();
@@ -129,26 +129,6 @@
         })
       })
     
-      
-      forgotPasswordLink.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        var emailForReset = prompt("Enter your email to reset the password:");
-
-        if (emailForReset) {
-          auth
-            .sendPasswordResetEmail(emailForReset)
-            .then(function () {
-              alert("Password reset email sent! Check your inbox.");
-            })
-            .catch(function (error) {
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              console.error(errorCode, errorMessage);
-              alert(errorMessage);
-            });
-        }
-      })
 
 
 
