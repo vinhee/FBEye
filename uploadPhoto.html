@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<link rel="stylesheet" href="css/uploadPhoto.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Upload Photo</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/uploadPhoto.css">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+  </head>
+  <body>
+
     <header style="display: flex; margin-top: 20px;">
         <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
             <ul>
-                <li class="li-space">
-                    <a href="" class="active" style="font-weight: lighter;">Home</a>
+                <li>
+                    <a href="" class="active">Home</a>
                 </li>
-                <li class="li-space">
-                    <a href="" style="font-weight: lighter;">Logout</a>
+                <li>
+                    <a href="">Logout</a>
                 </li>
                
             </ul>
@@ -34,19 +40,137 @@
     </header>
 
     <div class="center-form">
-	<div class="container">
-		<input type="file" id="file" accept="image/*" hidden>
-		<div class="img-area" data-img="">
-			<i class='bx bxs-cloud-upload icon'></i>
-			<h3>Upload Image</h3>
-			<p>Image size must be less than <span>2MB</span></p>
-		</div>
-		<button class="select-image">Select Image</button>
-        <br>
-        <button onclick="uploadImage()" class="select-image">Upload Image</button>
-	</div>
+        <div class="container">
+            <input type="file" id="file" accept="image/*" class="inp" onchange="getImageData(event)">
+            <div class="img-area" data-img="">
+                <i class='bx bxs-cloud-upload icon'></i>
+                <h3>Upload Image</h3>
+                <p>Image size must be less than <span>2MB</span></p>
+            </div>
+            <button class="selectImage" >Select Image</button>
+            <br>
+            <button onclick="uploadImage()" class="upload">Upload Image</button>
+        </div>
     </div>
-	
-	<script src="js/uploadPhoto.js"></script>
-</body>
+
+    <!-- <div class="imageUpload">
+      <input type="file" class="inp" onchange="getImageData(event)" />
+      <button onclick="selectImage()" class="selectImage">Select Images</button>
+      <span class="filedata"></span>
+      <div class="progressBar">
+        <div class="progress"></div>
+      </div>
+      <button onclick="uploadImage()" class="upload">Upload</button>
+      <span class="loading">Loading...</span>
+      <img class="img" />
+    </div> -->
+
+
+    <script>
+      const firebaseConfig = {
+         apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
+         authDomain: "fbeye-bf2f1.firebaseapp.com",
+         databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
+         projectId: "fbeye-bf2f1",
+         storageBucket: "fbeye-bf2f1.appspot.com",
+         messagingSenderId: "462631567055",
+         appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
+       };
+
+      const app = firebase.initializeApp(firebaseConfig);
+
+      const storage = firebase.storage();
+
+      const inp = document.querySelector(".inp");
+      const progressbar = document.querySelector(".progress");
+      const img = document.querySelector(".img");
+      const fileData = document.querySelector(".filedata");
+      //const loading = document.querySelector(".loading");
+      const inputImage = document.querySelector('.selectImage');
+      const inputFile = document.querySelector('#file');
+      const imgArea = document.querySelector('.img-area');
+
+      let file;
+      let fileName;
+      let progress;
+      let isLoading = false;
+      let uploadedFileName;
+    
+      const getImageData = (e) => {
+        file = e.target.files[0];
+        fileName = Math.round(Math.random() * 9999) + file.name;
+        if (fileName) {
+          fileData.style.display = "block";
+        }
+        fileData.innerHTML = fileName;
+        console.log(file, fileName);
+      };
+
+        //uploading image for show
+        inputImage.addEventListener('click', function () {
+            inputFile.click();
+    })
+
+    inputFile.addEventListener('change', function () {
+    const image = this.files[0]
+    if(image.size < 2000000) {
+        const reader = new FileReader();
+        reader.onload = ()=> {
+        const allImg = imgArea.querySelectorAll('img');
+        allImg.forEach(item=> item.remove());
+        const imgUrl = reader.result;
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        imgArea.appendChild(img);
+        imgArea.classList.add('active');
+        imgArea.dataset.img = image.name;
+        }
+        reader.readAsDataURL(image);
+    } else {
+        alert("Image size more than 2MB");
+    }
+    })
+
+
+      const uploadImage = () => {
+        //loading.style.display = "block";
+        const storageRef = storage.ref().child("myimages");
+        const folderRef = storageRef.child(fileName);
+        const uploadtask = folderRef.put(file);
+        uploadtask.on(
+          "state_changed",
+          (snapshot) => {
+            console.log("Snapshot", snapshot.ref.name);
+            progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            progress = Math.round(progress);
+            progressbar.style.width = progress + "%";
+            progressbar.innerHTML = progress + "%";
+            uploadedFileName = snapshot.ref.name;
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            storage
+              .ref("myimages")
+              .child(uploadedFileName)
+              .getDownloadURL()
+              .then((url) => {
+                console.log("URL", url);
+                if (!url) {
+                  img.style.display = "none";
+                } else {
+                  img.style.display = "block";
+                  loading.style.display = "none";
+                }
+                img.setAttribute("src", url);
+              });
+            console.log("File Uploaded Successfully");
+          }
+        );
+      };
+
+      
+    </script>
+  </body>
 </html>

@@ -27,20 +27,6 @@ inputFile.addEventListener('change', function () {
   }
 })
 
-//configure firebase
-const firebaseConfig = {
-    apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
-    authDomain: "fbeye-bf2f1.firebaseapp.com",
-    databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "fbeye-bf2f1",
-    storageBucket: "fbeye-bf2f1.appspot.com",
-    messagingSenderId: "462631567055",
-    appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
-  };
-
-  const app = firebase.initializeApp(firebaseConfig);
-
-  const storage = firebase.storage();
   const getImageData = (e) => {
     file = e.target.files[0];
     fileName = Math.round(Math.random() * 9999) + file.name;

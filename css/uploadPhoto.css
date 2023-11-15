@@ -95,7 +95,7 @@ p {
 .img-area.active:hover::before {
 	opacity: 1;
 }
-.select-image {
+.selectImage {
 	display: block;
 	width: 100%;
 	padding: 16px 0;
@@ -110,8 +110,26 @@ p {
 	font-family: 'Poppins', sans-serif;
 
 }
+.upload{
+	display: block;
+	width: 100%;
+	padding: 16px 0;
+	border-radius: 15px;
+	background: var(--blue);
+	color: #fff;
+	font-weight: 500;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	transition: all .3s ease;
+	font-family: 'Poppins', sans-serif;
+}
 .select-image:hover {
 	background: var(--dark-blue);
+}
+
+.inp{
+	display: none;
 }
 
 .center-form{
