@@ -60,7 +60,7 @@
               
               <div class="d-flex mb-5 align-items-center">
                
-                <span class="ml-auto"><a href="#" class="forgot-pass">Forgot Password</a></span> 
+                <span class="ml-auto"><a href="#" class="forgot-pass" id="forgotPass" >Forgot Password</a></span> 
               </div>
 
               <input type="submit" id="login-btn" value="Log In" onclick="employeeLogin()" class="btn btn-block btn-primary">              
@@ -107,8 +107,8 @@
       const auth = getAuth();
 
       const loginBtn = document.getElementById("login-btn");
-      // e.preventDefault();
-      // console.log("button clicked");
+      const forgotPasswordLink = document.getElementById("forgotPassword");
+
       
       loginBtn.addEventListener("click", function(e){
         e.preventDefault();
@@ -129,6 +129,26 @@
         })
       })
     
+      
+      forgotPasswordLink.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        var emailForReset = prompt("Enter your email to reset the password:");
+
+        if (emailForReset) {
+          auth
+            .sendPasswordResetEmail(emailForReset)
+            .then(function () {
+              alert("Password reset email sent! Check your inbox.");
+            })
+            .catch(function (error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              console.error(errorCode, errorMessage);
+              alert(errorMessage);
+            });
+        }
+      })
 
 
 
