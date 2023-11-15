@@ -89,7 +89,6 @@
       const inputImage = document.querySelector('.selectImage');
       const inputFile = document.querySelector('#file');
       const imgArea = document.querySelector('.img-area');
-
       let file;
       let fileName;
       let progress;
@@ -164,8 +163,12 @@
                   loading.style.display = "none";
                 }
                 img.setAttribute("src", url);
-              });
-            console.log("File Uploaded Successfully");
+                alert("Successfully uploaded image");
+            
+            })
+                .catch((error) => {
+                console.error("Error getting download URL:", error);
+                });
           }
         );
       };

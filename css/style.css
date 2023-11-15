@@ -352,10 +352,9 @@ header nav ul li a {
   text-transform: uppercase;
   transition: 0.2s;
   font-family: 'Poppins', sans-serif;
-  font-weight: bold;
   font-size: 12pt;
- 
 }
+
 header nav ul li a:hover,
 header nav ul li a.active {
   border-bottom-color: dodgerblue;
