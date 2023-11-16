@@ -125,14 +125,18 @@
       signInWithEmailAndPassword(auth, employeeEmail, employeePassword).then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        const userID = user.uid;
+        sessionStorage.setItem("employeeEmail", employeeEmail);
+        sessionStorage.setItem("employeeUID", userID)
         alert("Login Successfully!");
-        
-        const employeeRef = ref(database, 'Employees/' + user.uid);
+        const employeeRef = ref(database, 'Employees/' + userID);
           get(employeeRef).then((snapshot) => {
             const employeeData = snapshot.val();
+            sessionStorage.setItem("employeeName", employeeData.Name);
+            sessionStorage.setItem("employeeID", employeeData.EmployeeID);
           
               const dt = new Date();
-              update(ref(database, 'Employees/' + user.uid), {
+              update(ref(database, 'Employees/' + userID), {
                 last_login: dt,
               });
 
