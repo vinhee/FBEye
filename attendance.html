@@ -34,10 +34,10 @@
         <nav>
             <ul>
                 <li class="li-space">
-                    <a href="" class="active">Home</a>
+                    <a class="active" id="homepage">Home</a>
                 </li>
                 <li class="li-space">
-                    <a href="">Logout</a>
+                    <a href="index.html">Logout</a>
                 </li>
                
             </ul>
@@ -132,6 +132,16 @@
             </table>
         </section>
     </main>
+    <script>
+        document.getElementById("homepage").onclick = function(){
+      if (sessionStorage.getItem("employRole") == "Employee") {
+            window.location.href = "home.html";
+          }
+          else if (sessionStorage.getItem("employRole") == "Employer") {
+            window.location.href = "homeE.html";
+          }
+    }
+    </script>
 </body>
 
 </html> 

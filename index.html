@@ -46,6 +46,12 @@
               <h3 class="head">Sign In</h3>
               <p class="mb-4"></p>
             </div>
+            <div class="alert alert-danger" id="logInInput" role="alert">
+              Incorrect Email/Password
+            </div>
+            <div class="alert alert-danger" id="EmailFormat" role="alert">
+              Incorrect Email Format
+            </div>
             <form action="#" method="post">
               <div class="form-group first">
                 <label for="username"></label>
@@ -91,6 +97,8 @@
     import { getDatabase, update, ref, get } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
     import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
+    $("#logInInput").hide();
+    $("#AccountValid").hide();
     const firebaseConfig = {
         apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
         authDomain: "fbeye-bf2f1.firebaseapp.com",
@@ -127,13 +135,13 @@
         console.log(user);
         const userID = user.uid;
         sessionStorage.setItem("employeeEmail", employeeEmail);
-        sessionStorage.setItem("employeeUID", userID)
-        alert("Login Successfully!");
+        sessionStorage.setItem("employeeUID", userID);
         const employeeRef = ref(database, 'Employees/' + userID);
           get(employeeRef).then((snapshot) => {
             const employeeData = snapshot.val();
             sessionStorage.setItem("employeeName", employeeData.Name);
             sessionStorage.setItem("employeeID", employeeData.EmployeeID);
+            sessionStorage.setItem("employRole", employeeData.Role);
           
               const dt = new Date();
               update(ref(database, 'Employees/' + userID), {
@@ -151,14 +159,14 @@
           })
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        alert(errorMessage);
+        $("#EmailFormat").hide();
+        $("#logInInput").show();
+        
       })
     }
     else{
-      alert("Invalid Email Format!");
+      $("#logInInput").hide();
+      $("#EmailFormat").show();
     }
 
     })

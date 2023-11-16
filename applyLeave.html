@@ -39,10 +39,10 @@
     <nav>
         <ul>
             <li>
-                <a href="" class="active">Home</a>
+                <a class="active" id="homepage">Home</a>
             </li>
             <li>
-                <a href="">Logout</a>
+                <a href="index.html">Logout</a>
             </li>
            
         </ul>
@@ -74,15 +74,11 @@
           
      </div>
        <div class="form-row" style="padding-top: 15px;">
-          <div class="input-data">
-             <input type="text" id="name" required>
-             <div class="underline"></div>
-             <label for="">Name</label>
+          <div class="input-data" id="employeeName">
+            
           </div>
-          <div class="input-data">
-             <input type="text" id="employeeid" required>
-             <div class="underline"></div>
-             <label for="">Employee ID</label>
+          <div class="input-data" id="employeeID">
+          
           </div>
        </div>
        <div class="form-row">
@@ -120,6 +116,28 @@
     </form>
    </div>
 
+   <script>
+    document.getElementById("homepage").onclick = function(){
+      if (sessionStorage.getItem("employRole") == "Employee") {
+            window.location.href = "home.html";
+          }
+          else if (sessionStorage.getItem("employRole") == "Employer") {
+            window.location.href = "homeE.html";
+          }
+    }
+    $("#employeeName").html(`
+             <span> Employee Name</span>
+             <div style="padding-top:10px;">
+              <div class="underline"></div>
+             <span>${sessionStorage.getItem("employeeName")}</span>
+              </div>
+            `)
+    $("#employeeID").html(`<span> Employee ID</span>
+             <div style="padding-top:10px;">
+              <div class="underline"></div>
+             <span>${sessionStorage.getItem("employeeID")}</span>
+              </div>`)
+   </script>
     
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
@@ -165,8 +183,8 @@
                 // Adding node in database
                 set(ref(db, 'employeeMC/' + uniqueId),
                 {
-                    Name: document.getElementById("name").value,
-                    Employeeid: document.getElementById("employeeid").value,
+                    Name: sessionStorage.getItem("employeeName"),
+                    Employeeid: sessionStorage.getItem("employeeID"),
                     StartDate: document.getElementById("startDate").value,
                     EndDate: document.getElementById("endDate").value,
                     MCNo: document.getElementById("MCno").value,
