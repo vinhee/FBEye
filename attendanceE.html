@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
     <script src="js/attendance.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
@@ -65,7 +68,10 @@
                             <th> Status <span class="icon-arrow">&UpArrow;</span></th>
                         </tr>
                     </thead>
-                    <tbody>
+
+                <!--original codes for table-->
+                    <tbody id="myTable">
+                        <!--sample-->
                         <tr>
                             <td> 1 </td>
                             <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
@@ -77,109 +83,93 @@
                                 <p class="status present">Present</p>
                             </td>
                         </tr>
-                        <tr>
-                            <td> 2 </td>
-                            <td><img src="images/Jeet Saru.jpg" alt=""> Jeet Saru </td>
-                            <td> Human Resource </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 09:05:22 AM </td>
-                            <td> 06:51:27 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 3</td>
-                            <td><img src="images/Sonal Gharti.jpg" alt=""> Sonal Gharti </td>
-                            <td> Human Resource </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 09:05:22 AM </td>
-                            <td> 06:51:27 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 4</td>
-                            <td><img src="images/Alson GC.jpg" alt=""> Alson GC </td>
-                            <td> Marketing </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 08:15:42 AM </td>
-                            <td> 06:53:09 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 5</td>
-                            <td><img src="images/Sarita Limbu.jpg" alt=""> Sarita Limbu </td>
-                            <td> Marketing </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 08:21:46 AM </td>
-                            <td> 06:58:28 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 6</td>
-                            <td><img src="images/Alicia Gonley.jpg" alt=""> Alicia Gonley </td>
-                            <td> Sales </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 08:24:46 AM </td>
-                            <td> 06:45:28 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 7</td>
-                            <td><img src="images/Alson GC.jpg" alt=""> Jeet Saru </td>
-                            <td> Security </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 09:11:36 AM </td>
-                            <td> 06:38:38 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 8</td>
-                            <td><img src="images/Sarita Limbu.jpg" alt=""> Aayat Ali Khan </td>
-                            <td> Security </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 09:34:16 AM </td>
-                            <td> 06:48:18 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 9</td>
-                            <td><img src="images/Vin Hee.jpg" alt=""> Vinhee W </td>
-                            <td> Security </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 09:36:36 AM </td>
-                            <td> 06:47:55 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td> 10</td>
-                            <td><img src="images/Sharon Selena.jpg" alt=""> Sharon Selena </td>
-                            <td> Security </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 08:56:36 AM </td>
-                            <td> 06:32:51 PM </td>
-                            <td>
-                                <p class="status absent">Absent</p>
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </section>
         </main>
+        
+        <!--GET ALL DATA FROM REAL TIME DATABASE-->
+                
+        <!--initialise firebase sdk-->
+        <script>
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+
+        import { getDatabase, update, ref, get } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+
+         const firebaseConfig = {
+         apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
+         authDomain: "fbeye-bf2f1.firebaseapp.com",
+         databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
+         projectId: "fbeye-bf2f1",
+         storageBucket: "fbeye-bf2f1.appspot.com",
+         messagingSenderId: "462631567055",
+         appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
+       };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase();        
+        
+        function AddAllItemsToTable(employees){
+            var tableBody = document.getElementById("myTableBody");
+            
+            employees.forEach(employee => {
+                var rowHTML = `<tr>
+                <td>${employee.EmployeeID}</td>
+                <td>${employee.Name}</td>
+                <td>${employee.Department}</td>
+                <td>${employee.Date}</td>
+                <td>${employee.ClockInTime}</td>
+                <td>${employee.ClockOutTime}</td>
+                <td>
+                    <p class="status ${employee.Status.toLowerCase()}">${employee.Status}</p>
+                </td>
+            </tr>`;
+
+            tableBody.innerHTML += rowHTML;
+                 
+            })       
+        }
+        
+        
+        //get all the data
+        function GetAllDataOnce() {
+            const dbRef = ref(db);
+            
+            get(child(dbRef, "EmployeeStatus"))
+            .then((snapshot) => {
+                var employeesList = [];
+
+                snapshot.foreach(childSnapshot => {
+                    employeesList.push(childSnapshot.val());
+                });
+            AddAllItemsToTable(employeesList);
+            
+            })
+            .catch((error) => {
+                console.error("Error getting data: ", error);
+            });
+ 
+        }
+
+        function GetAllDataRealTime() {
+
+            const dbRef = ref(db,"EmployeeStatus");
+            
+            onValue(dbRef, (snapshot) => {
+                var employeesList = [];
+                snapshot.forach(childSnapshot => {
+                    employeesList.push(childSnapshot.val());
+            });
+          
+            AddAllItemsToTable(employeesList);
+ 
+        })
+    }
+        window.onload = GetAllDataRealTime();
+        
+        </script>
+        
     </body>
     
     </html>
