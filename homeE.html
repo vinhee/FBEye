@@ -61,7 +61,7 @@
 
  
    <section class="testimonial container" id="testimonial">
-    <h2 class="heading"> Welcome John!</h2>
+    <h2 class="heading" id="welcomeUser"></h2>
     <h3 class="subhead">
       Our Features & Services
     </h3>
@@ -111,6 +111,11 @@
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script type="module">
+      $("#welcomeUser").html(`Welcome 
+          ${sessionStorage.getItem("employeeName")}
+              `);
+    </script>
     <script>
         $(".carousel").owlCarousel({
           margin: 20,

@@ -53,19 +53,6 @@
         </div>
     </div>
 
-    <!-- <div class="imageUpload">
-      <input type="file" class="inp" onchange="getImageData(event)" />
-      <button onclick="selectImage()" class="selectImage">Select Images</button>
-      <span class="filedata"></span>
-      <div class="progressBar">
-        <div class="progress"></div>
-      </div>
-      <button onclick="uploadImage()" class="upload">Upload</button>
-      <span class="loading">Loading...</span>
-      <img class="img" />
-    </div> -->
-
-
     <script>
       const firebaseConfig = {
          apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
@@ -78,7 +65,6 @@
        };
 
       const app = firebase.initializeApp(firebaseConfig);
-
       const storage = firebase.storage();
 
       const inp = document.querySelector(".inp");
@@ -129,47 +115,22 @@
         alert("Image size more than 2MB");
     }
     })
-
-
-      const uploadImage = () => {
-        //loading.style.display = "block";
-        const storageRef = storage.ref().child("myimages");
-        const folderRef = storageRef.child(fileName);
+    const uploadImage = () => {
+        const folderRef = storage.ref().child(sessionStorage.getItem("employeeUID") + ".png");
         const uploadtask = folderRef.put(file);
         uploadtask.on(
           "state_changed",
           (snapshot) => {
             console.log("Snapshot", snapshot.ref.name);
-            progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            progress = Math.round(progress);
-            progressbar.style.width = progress + "%";
-            progressbar.innerHTML = progress + "%";
             uploadedFileName = snapshot.ref.name;
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            if(progress == 100){
+              alert("Image uploaded succesfully!");
+            }
           },
           (error) => {
             console.log(error);
           },
-          () => {
-            storage
-              .ref("myimages")
-              .child(uploadedFileName)
-              .getDownloadURL()
-              .then((url) => {
-                console.log("URL", url);
-                if (!url) {
-                  img.style.display = "none";
-                } else {
-                  img.style.display = "block";
-                  loading.style.display = "none";
-                }
-                img.setAttribute("src", url);
-                alert("Successfully uploaded image");
-            
-            })
-                .catch((error) => {
-                console.error("Error getting download URL:", error);
-                });
-          }
         );
       };
 
