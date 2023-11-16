@@ -20,6 +20,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js"></script>
+
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
@@ -111,18 +113,19 @@
         const db = getDatabase();        
         
         function AddAllItemsToTable(employees){
-            var tableBody = document.getElementById("myTableBody");
+            var tableBody = document.getElementById("myTable");
+            tbody.innerHTML = "";
             
-            employees.forEach(employee => {
+            employees.forEach(e => {
                 var rowHTML = `<tr>
-                <td>${employee.EmployeeID}</td>
-                <td>${employee.Name}</td>
-                <td>${employee.Department}</td>
-                <td>${employee.Date}</td>
-                <td>${employee.ClockInTime}</td>
-                <td>${employee.ClockOutTime}</td>
+                <td>${e.EmployeeID}</td>
+                <td>${e.Name}</td>
+                <td>${e.Department}</td>
+                <td>${e.Date}</td>
+                <td>${e.ClockInTime}</td>
+                <td>${e.ClockOutTime}</td>
                 <td>
-                    <p class="status ${employee.Status.toLowerCase()}">${employee.Status}</p>
+                    <p class="status ${e.Status.toLowerCase()}">${e.Status}</p>
                 </td>
             </tr>`;
 
@@ -136,13 +139,15 @@
         function GetAllDataOnce() {
             const dbRef = ref(db);
             
-            get(child(dbRef, "EmployeeStatus"))
+            get(child(dbRef, "EmployeeStatus" ))
             .then((snapshot) => {
                 var employeesList = [];
 
-                snapshot.foreach(childSnapshot => {
+                snapshot.forEach(childSnapshot => {
                     employeesList.push(childSnapshot.val());
                 });
+
+            
             AddAllItemsToTable(employeesList);
             
             })
@@ -152,21 +157,23 @@
  
         }
 
+
         function GetAllDataRealTime() {
 
             const dbRef = ref(db,"EmployeeStatus");
             
             onValue(dbRef, (snapshot) => {
                 var employeesList = [];
-                snapshot.forach(childSnapshot => {
+                snapshot.forEach(childSnapshot => {
                     employeesList.push(childSnapshot.val());
             });
+            console.log(employeesList);
           
             AddAllItemsToTable(employeesList);
  
         })
     }
-        window.onload = GetAllDataRealTime();
+        window.onload = GetAllDataRealTime;
         
         </script>
         
