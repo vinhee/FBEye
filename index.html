@@ -134,6 +134,7 @@
             const employeeData = snapshot.val();
             sessionStorage.setItem("employeeName", employeeData.Name);
             sessionStorage.setItem("employeeID", employeeData.EmployeeID);
+            sessionStorage.setItem("employRole", employeeData.Role);
           
               const dt = new Date();
               update(ref(database, 'Employees/' + userID), {
