@@ -94,10 +94,7 @@
         </main>
     
         <script>
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-
-        import { getDatabase, update, ref, get, child, onValue} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
-
+       
             const firebaseConfig = {
             apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
             authDomain: "fbeye-bf2f1.firebaseapp.com",
@@ -108,80 +105,25 @@
             appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase();        
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();        
         
-        function AddAllItemsToTable(employees){
-            var tableBody = document.getElementById("myTableBody");
-            
-            employees.forEach(employee => {
-                var rowHTML = `<tr>
-                <td>${employee.EmployeeID}</td>
-                <td>${employee.Name}</td>
-                <td>${employee.Department}</td>
-                <td>${employee.Date}</td>
-                <td>${employee.ClockInTime}</td>
-                <td>${employee.ClockOutTime}</td>
-                <td>
-                    <p class="status ${employee.Status.toLowerCase()}">${employee.Status}</p>
-                </td>
-            </tr>`;
+        const employeesRef = firebase.database().ref('EmployeesStatus');
 
-            tableBody.innerHTML += rowHTML;
-                    
-            })       
-        }
-        
-        
-        //get all the data
-        function GetAllDataOnce() {
-            const dbRef = ref(db);
-            
-            get(child(dbRef, "EmployeeStatus"))
-            .then((snapshot) => {
-                var employeesList = [];
-
-                snapshot.foreach(childSnapshot => {
-                    employeesList.push(childSnapshot.val());
-                });
-            AddAllItemsToTable(employeesList);
-            
-            })
-            .catch((error) => {
-                console.error("Error getting data: ", error);
+        employeesRef.on('value')
+        .then(snapshot => {
+            snapshot.forEach(employeeSnapshot => {
+            const employeeData = employeeSnapshot.val();
+            console.log(`Name: ${employeeData.Name}, Employee ID: ${employeeData.EmployeeID}, Clock In Time: ${employeeData.ClockInTime}, Date: ${employeeData.Date}`);
             });
-    
-        }
-      
-        function GetAllDataRealTime(){
-            console.log("i");
-
-            const dbRef = ref(db,"EmployeeStatus");
-            
-            onValue(dbRef, (snapshot) => {
-                var employeesList = [];
-                snapshot.forEach(childSnapshot => {
-                    employeesList.push(childSnapshot.val());
-            });
-            
-            AddAllItemsToTable(employeesList);
-    
         })
-        }
-
-        var btn = document.getElementById("databtn");
-        btn.addEventListener("click", function(e){
-            e.preventDefault;
-            console.log("sdfghjk");
+        .catch(error => {
+            console.error("Error fetching employees:", error);
         });
 
-        
-        
-        GetAllDataRealTime();
 
-
-        // window.onload = GetAllDataRealTime;
-        
+       
+     
         </script>
 
 
