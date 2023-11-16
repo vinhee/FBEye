@@ -1,82 +1,82 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="fonts/icomoon/style.css" />
 
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="icon" type="image/png" href="/images/logo.png"> 
-   
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+
     <!-- Style -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/attendance.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
-    <script src="js/attendance.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js"></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/attendance.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap"
+      rel="stylesheet"
+    />
     <title>Attendance</title>
   </head>
 
-  
-    <body>
+  <body>
+    <header style="display: flex; margin-top: 20px">
+      <a href="home.html"><img src="images/FBEYE.png" class="logo-img" /></a>
 
-        <header style="display: flex; margin-top: 20px;">
-            <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
-            </div>
-            <input type="checkbox" id="nav_check" hidden>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="homeE.html" class="active">Home</a>
-                    </li>
-                    <li>
-                        <a href="index.html">Logout</a>
-                    </li>
-                   
-                </ul>
-            </nav>
-            <label for="nav_check" class="hamburger">
-                
-                  <div></div>
-                  <div></div>
-                  <div></div>
-               
-               
-            </label>
-        </header>
+      <input type="checkbox" id="nav_check" hidden />
+      <nav>
+        <ul>
+          <li>
+            <a href="homeE.html" class="active">Home</a>
+          </li>
+          <li>
+            <a href="index.html">Logout</a>
+          </li>
+        </ul>
+      </nav>
+      <label for="nav_check" class="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </label>
+    </header>
 
-        <main class="table" style="width: 93vw;">
-            <section class="table__body">
-                <div>
-                    <button id="databtn">button</input> 
-                </div>
-                <table>
-                    <thead>
-                        <tr style="color: white;">
-                            <th> Id <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Employee <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Department <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Date <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Clock In Time <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Clock Out Time <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Status <span class="icon-arrow">&UpArrow;</span></th>
-                        </tr>
-                    </thead>
+    <main class="table" style="width: 93vw">
+      <section class="table__body">
+        <table>
+          <thead>
+            <tr style="color: white">
+              <th>Id <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Employee <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Department <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Date <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Clock In Time <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Clock Out Time <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Status <span class="icon-arrow">&UpArrow;</span></th>
+            </tr>
+          </thead>
 
-                <!--original codes for table-->
-                    <tbody id="tbody1">
-                        <!--sample-->
-                        <!-- <tr>
+          <!--original codes for table-->
+          <tbody id="myTableBody">
+            <!--sample-->
+            <!-- <tr>
                             <td> 1 </td>
                             <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
                             <td> Sales </td>
@@ -87,109 +87,132 @@
                                 <p class="status present">Present</p>
                             </td>
                         </tr> -->
-                        
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    
-        <script>
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+          </tbody>
+        </table>
+      </section>
+    </main>
 
-        import { getDatabase, update, ref, get, child, onValue} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js"
+    ></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 
-            const firebaseConfig = {
-            apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
-            authDomain: "fbeye-bf2f1.firebaseapp.com",
-            databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "fbeye-bf2f1",
-            storageBucket: "fbeye-bf2f1.appspot.com",
-            messagingSenderId: "462631567055",
-            appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
-        };
+      import {
+        getDatabase,
+        update,
+        ref,
+        get,
+        child,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase();        
-        
-        function AddAllItemsToTable(employees){
-            var tableBody = document.getElementById("myTableBody");
-            
-            employees.forEach(employee => {
-                var rowHTML = `<tr>
+      import {
+        getStorage,
+        getDownloadURL,
+        ref as storageRef,
+      } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
+        authDomain: "fbeye-bf2f1.firebaseapp.com",
+        databaseURL:
+          "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "fbeye-bf2f1",
+        storageBucket: "fbeye-bf2f1.appspot.com",
+        messagingSenderId: "462631567055",
+        appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase();
+      const storage = getStorage();
+
+      function AddAllItemsToTable(employees) {
+        const tableBody = document.getElementById("myTableBody");
+        let tableContent = "";
+
+        // .filter((e) => e.userID === sessionStorage.getItem("employeeUID"))
+        employees.forEach((employee) => {
+          const employeeProfileImageRef = storageRef(
+            storage,
+            `${employee.userID}.png`
+          );
+
+          const rowHTML = `<tr>
                 <td>${employee.EmployeeID}</td>
-                <td>${employee.Name}</td>
+                <td><img name="${
+                  employee.userID
+                }_pp" src="/images/profile.png" alt="${
+            employee.Name
+          }_profile_picture"">${employee.Name}</td>
                 <td>${employee.Department}</td>
                 <td>${employee.Date}</td>
-                <td>${employee.ClockInTime}</td>
-                <td>${employee.ClockOutTime}</td>
+                <td>${employee.ClockInTime ? employee.ClockInTime : "-"}</td>
+                <td>${employee.ClockOutTime ? employee.ClockOutTime : "-"}</td>
                 <td>
-                    <p class="status ${employee.Status.toLowerCase()}">${employee.Status}</p>
+                    <p class="status ${employee.Status?.toLowerCase()}">${
+            employee.Status
+          }</p>
                 </td>
             </tr>`;
 
-            tableBody.innerHTML += rowHTML;
-                    
-            })       
-        }
-        
-        
-        //get all the data
-        function GetAllDataOnce() {
-            const dbRef = ref(db);
-            
-            get(child(dbRef, "EmployeeStatus"))
-            .then((snapshot) => {
-                var employeesList = [];
-
-                snapshot.foreach(childSnapshot => {
-                    employeesList.push(childSnapshot.val());
-                });
-            AddAllItemsToTable(employeesList);
-            
-            })
-            .catch((error) => {
-                console.error("Error getting data: ", error);
-            });
-    
-        }
-      
-        function GetAllDataRealTime(){
-            console.log("i");
-
-            const dbRef = ref(db,"EmployeeStatus");
-            
-            onValue(dbRef, (snapshot) => {
-                var employeesList = [];
-                snapshot.forEach(childSnapshot => {
-                    employeesList.push(childSnapshot.val());
-            });
-            
-            AddAllItemsToTable(employeesList);
-    
-        })
-        }
-
-        var btn = document.getElementById("databtn");
-        btn.addEventListener("click", function(e){
-            e.preventDefault;
-            console.log("sdfghjk");
+          tableContent += rowHTML;
         });
 
-        
-        
-        GetAllDataRealTime();
+        tableBody.innerHTML = tableContent;
 
+        employees.forEach((employee) => {
+          const employeeProfileImageRef = storageRef(
+            storage,
+            `${employee.userID}.png`
+          );
 
-        // window.onload = GetAllDataRealTime;
-        
-        </script>
+          getDownloadURL(employeeProfileImageRef).then((url) => {
+            if (url) {
+              const profileImages = document.getElementsByName(
+                `${employee.userID}_pp`
+              );
+              profileImages.forEach((pImage) => {
+                pImage.src = url;
+              });
+            }
+          });
+        });
+      }
 
+      function GetAllDataRealTime() {
+        const dbRef = ref(db, "EmployeesStatus");
 
+        onValue(dbRef, (snapshot) => {
+          const employeesList = [];
+          snapshot.forEach((childSnapshot) => {
+            employeesList.push(childSnapshot.val());
+          });
+          AddAllItemsToTable(employeesList);
+        });
+      }
 
+      GetAllDataRealTime();
 
-       
-    
-        
-    </body>
-    
-    </html>
+      // window.onload = GetAllDataRealTime;
+    </script>
+  </body>
+</html>
