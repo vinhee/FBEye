@@ -59,7 +59,7 @@
 
  
    <section class="testimonial container" id="testimonial">
-    <h2 class="heading"> Welcome John!</h2>
+    <h2 class="heading" id="welcomeUser"> </h2>
     <h3 class="subhead">
       Our Features & Services
     </h3>
@@ -97,7 +97,12 @@
     <script src="js/script.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
-
+    <script type="module">
+      sessionStorage.getItem("employeeEmail");
+      $("#welcomeUser").html(`Welcome 
+          ${sessionStorage.getItem("employeeName")}
+              `);
+    </script>
   </body>
 </html>
 
