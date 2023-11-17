@@ -224,6 +224,7 @@ h2 {
 .heading{
   text-align: center;
   font-weight: lighter;
+  font-size: 3.5rem;
 }
 .subhead{
     text-align: center;
@@ -236,7 +237,7 @@ h2 {
   color: white;
   border-radius: 0.5rem;
   padding: 0.5rem 3rem;
-  font-size: 1rem;
+  font-size: 1.8rem;
   cursor: pointer;
   font-family: 'Poppins', sans-serif;;
   
@@ -268,6 +269,7 @@ h2 {
   font-size: 1.8rem;
   letter-spacing: 1px;
   font-weight: 500;
+  font-size: 2.3rem;
 }
 .testimonial-data {
   display: grid;
@@ -302,7 +304,7 @@ h2 {
 }
 
 .t-box h2 {
-  font-size: 1.4rem;
+  font-size: 2rem;
   font-weight: 500;
   letter-spacing: 1px;
   margin-bottom: 1rem;

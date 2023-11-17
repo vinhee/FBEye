@@ -19,6 +19,12 @@ p {
 	--grey: #f2f2f2;
 }
 
+.alert-style{
+	color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
 
 .container {
 	max-width: 400px;
