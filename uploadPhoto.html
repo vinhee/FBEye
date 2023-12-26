@@ -125,6 +125,10 @@
     }
     })
     const uploadImage = () => {
+        if (!file){
+          alert("Please select an image before uploading.");
+          return;
+        }
         const folderRef = storage.ref().child(sessionStorage.getItem("employeeUID") + ".png");
         const uploadtask = folderRef.put(file);
         uploadtask.on(
@@ -133,16 +137,15 @@
             console.log("Snapshot", snapshot.ref.name);
             uploadedFileName = snapshot.ref.name;
             var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            if(progress == 100){
-              alert("Image uploaded successfully!");
-            }
-            else{
-              alert("Image didn't upload successfully");
-            }
+            
           },
           (error) => {
             console.log(error);
+            alert("Image upload unsuccessful. Please try again.");
           },
+          () => {
+            alert("Image uploaded successfully!");
+          }
         );
       };
 
