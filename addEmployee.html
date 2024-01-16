@@ -70,7 +70,10 @@
 <div class="col-12 col-sm-auto mb-3">
 <div class="mx-auto" style="width: 140px;">
 <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-<span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+  <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+  <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+    <img id="selectedProfilePicture" style="max-width: 100%; max-height: 100%; display: none;">
+  </div>
 </div>
 </div>
 </div>
@@ -78,17 +81,19 @@
 <div class="text-center text-sm-left mb-2 mb-sm-0" style="margin-top: auto;">
 
 <div class="mt-2">
-<button class="btn btn-primary" type="button">
-<i class="fa fa-fw fa-camera"></i>
-<span>Add Profile Picture</span>
+<button class="btn btn-primary" type="button" onclick="document.getElementById('profilePicture').click();">
+    <i class="fa fa-fw fa-camera"></i>
+    <span>Add Profile Picture</span>
 </button>
+<input type="file" accept="image/*" id="profilePicture" class="form-control" style="display: none;">
+
 </div>
 </div>
 
 
 <div class="text-center text-sm-right">
 <span class="badge badge-secondary">administrator</span>
-<div class="text-muted"><small>Joined 09 Dec 2017</small></div>
+<div class="text-muted"><small id="joinDate">Joined 09 Dec 2017</small></div>
 </div>
 </div>
 </div>
@@ -104,13 +109,13 @@
 <div class="col">
 <div class="form-group">
 <label>Full Name</label>
-<input class="form-control" type="text" name="name">
+<input class="form-control" type="text" name="name" id="name" required>
 </div>
 </div>
 <div class="col">
 <div class="form-group">
 <label>Phone Number</label>
-<input class="form-control" type="text" name="phonenumber">
+<input class="form-control" type="text" name="phonenumber" id="phoneNo" required>
 </div>
 </div>
 </div>
@@ -121,13 +126,13 @@
 <div class="col">
 <div class="form-group">
 <label>Email</label>
-<input class="form-control" type="text" name="email">
+<input class="form-control" type="text" name="email" id="email" required>
 </div>
 </div>
 <div class="col">
 <div class="form-group">
 <label>Gender</label>
- <select name="gender" id="gender" class="form-control">
+ <select name="gender" id="gender" class="form-control" id="gender" required>
     <option value="-"></option>       
     <option value="male">Male</option>       
     <option value="female">Female</option>       
@@ -142,13 +147,13 @@
 <div class="col">
 <div class="form-group">
 <label>Department</label>
-<input class="form-control" type="text" name="Department">
+<input class="form-control" type="text" name="Department" id="department" required>
 </div>
 </div>
 <div class="col">
 <div class="form-group">
 <label>Role</label>
-<input class="form-control" type="text" name="role">
+<input class="form-control" type="text" name="role" id="role" required>
 </div>
 </div>
 </div>
@@ -164,7 +169,7 @@
 <div class="col">
 <div class="form-group">
 <label>New Password</label>
-<input class="form-control" type="password">
+<input class="form-control" type="password" id="newPassword">
 </div>
 </div>
 </div> 
@@ -172,15 +177,14 @@
 <div class="col">
 <div class="form-group">
 <label>Confirm Password</label>
-<input class="form-control" type="password">
+<input class="form-control" type="password" id="confirmPassword">
 </div>
 </div>
 </div> 
 </div>
 </div>
 <div class="d-flex justify-content-end" style="margin-top: 20px;">
-  <button class="btn btn-primary" type="submit" style="margin-right: 20px;">Delete</button>
-  <button class="btn btn-primary" type="submit">Save Changes</button>
+  <button class="btn btn-primary" type="submit" id="addRecord">Add Record</button>
 </div>
 </form>
 </div>
@@ -193,66 +197,119 @@
     </body>
     
        
-  
-    <script
-    src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
-    type="module"
-  ></script>
-  <script
-    type="module"
-    src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"
-  ></script>
-  <script
-    type="module"
-    src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"
-  ></script>
-  <script
-    type="module"
-    src="https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js"
-  ></script>
-  <script
-    type="module"
-    src="https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js"
-  ></script>
+ 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 
-    import {
-      getDatabase,
-      update,
-      ref,
-      get,
-      child,
-      onValue,
-    } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
-    import {
-      getStorage,
-      getDownloadURL,
-      ref as storageRef,
-    } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getDatabase, update, ref, get, set } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    import {getStorage, ref as storageRef, uploadBytes} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-storage.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
-      authDomain: "fbeye-bf2f1.firebaseapp.com",
-      databaseURL:
-        "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "fbeye-bf2f1",
-      storageBucket: "fbeye-bf2f1.appspot.com",
-      messagingSenderId: "462631567055",
-      appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
-    };
+        apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
+        authDomain: "fbeye-bf2f1.firebaseapp.com",
+        databaseURL: "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "fbeye-bf2f1",
+        storageBucket: "fbeye-bf2f1.appspot.com",
+        messagingSenderId: "462631567055",
+        appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
+        measurementId: "G-83NWPL2V92"
+      };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase();
-    const storage = getStorage();
-   
+    const database = getDatabase(app);
+    const auth = getAuth();
+    const storage = getStorage(app);
+    let generatedEmployeeID = 11;
+    function generateEmployeeID() {
+    return ++generatedEmployeeID;
+    }
 
+    function createUser() {
+      const name = document.getElementById("name").value;
+      const phoneNo = document.getElementById("phoneNo").value;
+      const email = document.getElementById("email").value;
+      const gender = document.getElementById("gender").value;
+      const department = document.getElementById("department").value;
+      const role = document.getElementById("role").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const employeeID = generateEmployeeID();
+      const joinDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit',
+      });
     
-  
+
+      const profilePictureInput = document.getElementById("profilePicture");
+      const selectedProfilePicture = document.getElementById("selectedProfilePicture");
+      const profilePictureFile = profilePictureInput.files[0];
+
+      if (profilePictureFile) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        selectedProfilePicture.src = e.target.result;
+        selectedProfilePicture.style.display = "block";
+      };
+      reader.readAsDataURL(profilePictureFile);
+    }
+
+    if (newPassword === confirmPassword) {
+      createUserWithEmailAndPassword(auth, email, confirmPassword)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          const userID = user.uid;
+
+          if (profilePictureFile) {
+            const storageReference = storageRef(storage, userID + '.png');
+            uploadBytes(storageReference, profilePictureFile)
+              .then(() => {
+                set(ref(database, 'Employees/' + userID), {
+                  Name: name,
+                  EmployeeID: employeeID,
+                  PhoneNumber: phoneNo,
+                  Email: email,
+                  JoinDate: joinDate,
+                  Department: department,
+                  Role: role,
+                });
+
+                alert("User created successfully!");
+              })
+              .catch((error) => {
+                alert("Error uploading profile picture: " + error.message);
+              });
+          } else {
+            set(ref(database, 'Employees/' + userID), {
+              FullName: name,
+              EmployeeID: employeeID,
+              PhoneNumber: phoneNo,
+              Email: email,
+              JoinDate: joinDate,
+              Department: department,
+              Role: role,
+            });
+
+            alert("User created successfully!");
+          }
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          alert("Error: " + errorMessage);
+        });
+    } else {
+      alert("Password does not match!");
+    }
+  }
+    document.getElementById("addRecord").addEventListener("click", (e) => {
+      e.preventDefault();
+      createUser();
+    });
 
 
-    // window.onload = GetAllDataRealTime;
   </script>
 </body>
 </html>
