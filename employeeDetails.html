@@ -198,7 +198,6 @@
     const database = getDatabase(app);
     const auth = getAuth();
     const storage = getStorage(app);
-    let generatedEmployeeID = 11;
     const urlParams = new URLSearchParams(window.location.search);
     const userID = urlParams.get('userID');
     
@@ -220,6 +219,8 @@
 
       }).catch((error) => {
         alert("error: ", error);
+        window.location.href = "admin.html";
+
       });
     }
 
