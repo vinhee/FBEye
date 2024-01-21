@@ -33,7 +33,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap"
       rel="stylesheet"
     />
-    <title> Add New Employee </title>
+    <title> Employee Details </title>
   </head>
 
   <body>
@@ -44,7 +44,7 @@
       <nav>
         <ul>
           <li>
-            <a href="homeE.html" class="active">Home</a>
+            <a href="admin.html" class="active">Home</a>
           </li>
           <li>
             <a href="index.html">Logout</a>
@@ -83,7 +83,7 @@
 <div class="mt-2">
 <button class="btn btn-primary" type="button" onclick="document.getElementById('profilePicture').click();">
     <i class="fa fa-fw fa-camera"></i>
-    <span>Add Profile Picture</span>
+    <span>Update Profile Picture</span>
 </button>
 <input type="file" accept="image/*" id="profilePicture" class="form-control" style="display: none;">
 
@@ -98,7 +98,7 @@
 </div>
 </div>
 <ul class="nav nav-tabs">
-<li class="nav-item"><a href class="active nav-link">Add New Employee Information</a></li>
+<li class="nav-item"><a href class="active nav-link">Employee Information</a></li>
 </ul>
 <div class="tab-content pt-3">
 <div class="tab-pane active">
@@ -158,33 +158,10 @@
 </div>
 </div>
 
-
-
-
-
-<div class="row">
-<div class="col-12 col-sm-6 mb-3">
-<div class="mb-2"><b>Set New Password</b></div>
-<div class="row">
-<div class="col">
-<div class="form-group">
-<label>New Password</label>
-<input class="form-control" type="password" id="newPassword">
-</div>
-</div>
-</div> 
-<div class="row">
-<div class="col">
-<div class="form-group">
-<label>Confirm Password</label>
-<input class="form-control" type="password" id="confirmPassword">
-</div>
-</div>
-</div> 
-</div>
-</div>
 <div class="d-flex justify-content-end" style="margin-top: 20px;">
-  <button class="btn btn-primary" type="submit" id="addRecord">Add Record</button>
+  <button class="btn" type="submit" id="addRecord" style="margin-right: 20px;background-color: red;color: white;">Delete Record</button>
+  <button class="btn btn-primary" type="submit" id="addRecord">Update Record</button>
+
 </div>
 </form>
 </div>
@@ -222,89 +199,110 @@
     const auth = getAuth();
     const storage = getStorage(app);
     let generatedEmployeeID = 11;
-    function generateEmployeeID() {
-    return ++generatedEmployeeID;
+    const urlParams = new URLSearchParams(window.location.search);
+    const userID = urlParams.get('userID');
+    
+    if(!userID){
+      alert("No user ID found!");
+      window.location.href = "admin.html";
+    }
+    else{
+      const employeeRef = ref(database, `Employees/${userID}`);
+      get(employeeRef).then((snapshot) => {
+        const employeeData = snapshot.val();
+        document.getElementById("name").value = employeeData.Name;
+        document.getElementById("phoneNo").value = employeeData.PhoneNumber;
+        document.getElementById("email").value = employeeData.Email;
+        document.getElementById("department").value= employeeData.Department;
+        document.getElementById("role").value = employeeData.Role;
+        document.getElementById("joinDate").innerHTML = `Joined ${employeeData.JoinDate}`;
+        document.getElementById("gender").value = employeeData.Gender;
+
+      }).catch((error) => {
+        alert("error: ", error);
+      });
     }
 
-    function createUser() {
-      const name = document.getElementById("name").value;
-      const phoneNo = document.getElementById("phoneNo").value;
-      const email = document.getElementById("email").value.toLowerCase();
-      const gender = document.getElementById("gender").value;
-      const department = document.getElementById("department").value;
-      const role = document.getElementById("role").value;
-      const newPassword = document.getElementById("newPassword").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-      const employeeID = generateEmployeeID();
-      const joinDate = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit',
-      });
+
+    
+  //   function createUser() {
+  //     const name = document.getElementById("name").value;
+  //     const phoneNo = document.getElementById("phoneNo").value;
+  //     const email = document.getElementById("email").value;
+  //     const gender = document.getElementById("gender").value;
+  //     const department = document.getElementById("department").value;
+  //     const role = document.getElementById("role").value;
+  //     const newPassword = document.getElementById("newPassword").value;
+  //     const confirmPassword = document.getElementById("confirmPassword").value;
+  //     const employeeID = generateEmployeeID();
+  //     const joinDate = new Date().toLocaleDateString('en-US', {
+  //           year: 'numeric',
+  //           month: 'short',
+  //           day: '2-digit',
+  //     });
     
 
-      const profilePictureInput = document.getElementById("profilePicture");
-      const selectedProfilePicture = document.getElementById("selectedProfilePicture");
-      const profilePictureFile = profilePictureInput.files[0];
+  //     const profilePictureInput = document.getElementById("profilePicture");
+  //     const selectedProfilePicture = document.getElementById("selectedProfilePicture");
+  //     const profilePictureFile = profilePictureInput.files[0];
 
-      if (profilePictureFile) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        selectedProfilePicture.src = e.target.result;
-        selectedProfilePicture.style.display = "block";
-      };
-      reader.readAsDataURL(profilePictureFile);
-    }
+  //     if (profilePictureFile) {
+  //     const reader = new FileReader();
+  //     reader.onload = function (e) {
+  //       selectedProfilePicture.src = e.target.result;
+  //       selectedProfilePicture.style.display = "block";
+  //     };
+  //     reader.readAsDataURL(profilePictureFile);
+  //   }
 
-    if (newPassword === confirmPassword) {
-      createUserWithEmailAndPassword(auth, email, confirmPassword)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          const userID = user.uid;
+  //   if (newPassword === confirmPassword) {
+  //     createUserWithEmailAndPassword(auth, email, confirmPassword)
+  //       .then((userCredential) => {
+  //         const user = userCredential.user;
+  //         const userID = user.uid;
 
-          if (profilePictureFile) {
-            const storageReference = storageRef(storage, userID + '.png');
-            uploadBytes(storageReference, profilePictureFile)
-              .then(() => {
-                set(ref(database, 'Employees/' + userID), {
-                  Name: name,
-                  EmployeeID: employeeID,
-                  PhoneNumber: phoneNo,
-                  Email: email,
-                  JoinDate: joinDate,
-                  Department: department,
-                  Role: role,
-                });
+  //         if (profilePictureFile) {
+  //           const storageReference = storageRef(storage, userID + '.png');
+  //           uploadBytes(storageReference, profilePictureFile)
+  //             .then(() => {
+  //               set(ref(database, 'Employees/' + userID), {
+  //                 Name: name,
+  //                 EmployeeID: employeeID,
+  //                 PhoneNumber: phoneNo,
+  //                 Email: email,
+  //                 JoinDate: joinDate,
+  //                 Department: department,
+  //                 Role: role,
+  //               });
 
-                alert("User created successfully!");
-                window.location.href = "admin.html";
-              })
-              .catch((error) => {
-                alert("Error uploading profile picture: " + error.message);
-              });
-          } else {
-            set(ref(database, 'Employees/' + userID), {
-              Name: name,
-              EmployeeID: employeeID,
-              PhoneNumber: phoneNo,
-              Email: email,
-              JoinDate: joinDate,
-              Department: department,
-              Role: role,
-            });
+  //               alert("User created successfully!");
+  //             })
+  //             .catch((error) => {
+  //               alert("Error uploading profile picture: " + error.message);
+  //             });
+  //         } else {
+  //           set(ref(database, 'Employees/' + userID), {
+  //             FullName: name,
+  //             EmployeeID: employeeID,
+  //             PhoneNumber: phoneNo,
+  //             Email: email,
+  //             JoinDate: joinDate,
+  //             Department: department,
+  //             Role: role,
+  //           });
 
-            alert("User created successfully!");
-          }
-        })
-        .catch((error) => {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          alert("Error: " + errorMessage);
-        });
-    } else {
-      alert("Password does not match!");
-    }
-  }
+  //           alert("User created successfully!");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         var errorCode = error.code;
+  //         var errorMessage = error.message;
+  //         alert("Error: " + errorMessage);
+  //       });
+  //   } else {
+  //     alert("Password does not match!");
+  //   }
+  // }
     document.getElementById("addRecord").addEventListener("click", (e) => {
       e.preventDefault();
       createUser();

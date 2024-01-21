@@ -60,7 +60,12 @@
 
     <div class="head1">
       <p style="margin-bottom: 0">Total Employee: <span id="countE"> </span></p>
-      <button class="position">+ Add New Employee</button>
+      <button
+        class="position"
+        onclick="window.location.href = 'addEmployee.html'"
+      >
+        + Add New Employee
+      </button>
     </div>
     <main class="table" style="width: 93vw; margin-top: 20px">
       <section class="table__body">
@@ -159,10 +164,10 @@
 
           const rowHTML = `<tr>
               <td>${employee.EmployeeID}</td>
-              <td><img name="${employee.userID}_pp" src="/images/profile.png" alt="${employee.Name}_profile_picture"">${employee.Name}</td>
+              <td><a href="employeeDetails.html?userID=${employee.userID}"><img name="${employee.userID}_pp" src="/images/profile.png" alt="${employee.Name}_profile_picture"">${employee.Name}</a></td>
               <td>${employee.Department}</td>
               <td>
-                <a href="">View profile</a>
+                <a href="employeeDetails.html?userID=${employee.userID}">View profile</a>
               </td>
           </tr>`;
 
