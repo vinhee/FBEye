@@ -144,6 +144,19 @@
 
       const db = getDatabase(app);
 
+      function formatDateTime(date) {
+      return new Date(date).toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+    }
+
+
       $(document).ready(function(){
       var leaveRequestSelect = $("#leaveRequest");
         leaveRequestSelect.change(function(){
@@ -166,6 +179,7 @@
             document.getElementById("submit").addEventListener('click', function(e){
                 e.preventDefault();
                 var uniqueId = 'id' + (new Date()).getTime();
+               
                 // Adding node in database
                 set(ref(db, 'employeeMC/' + uniqueId),
                 {
@@ -174,7 +188,11 @@
                     StartDate: document.getElementById("startDate").value,
                     EndDate: document.getElementById("endDate").value,
                     MCNo: document.getElementById("MCno").value,
-                    MedicalCentre: document.getElementById("medicalCentre").value
+                    MedicalCentre: document.getElementById("medicalCentre").value,
+                    SubmitDate: formatDateTime(Date.now()),
+                    ApprovalStatus: "pending",
+                    AbsenceReason: "Medical Leave",
+                    userID: sessionStorage.getItem("employeeUID")
                 });
                 alert("Request Submitted Successfully!");
             });
@@ -200,6 +218,11 @@
                     StartDate: document.getElementById("startDate").value,
                     EndDate: document.getElementById("endDate").value,
                     Leave: document.getElementById("leave").value,
+                    SubmitDate: formatDateTime(Date.now()),
+                    ApprovalStatus: "pending",
+                    AbsenceReason: "Leave Request",
+                    userID: sessionStorage.getItem("employeeUID")
+                    
                 });
                 alert("Request Submitted Successfully!");
             });
