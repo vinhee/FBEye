@@ -33,7 +33,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap"
       rel="stylesheet"
     />
-    <title>Admin</title>
+    <title>Leave Request</title>
   </head>
 
   <body>
@@ -61,15 +61,6 @@
       </label>
     </header>
 
-    <div class="head1">
-      <p style="margin-bottom: 0">Total Employee: <span id="countE"> </span></p>
-      <button
-        class="position"
-        onclick="window.location.href = 'addEmployee.html'"
-      >
-        + Add New Employee
-      </button>
-    </div>
     <main class="table" style="width: 93vw; margin-top: 20px">
       <section class="table__body">
         <table>
@@ -78,7 +69,7 @@
               <th>Id <span class="icon-arrow">&UpArrow;</span></th>
               <th>Employee <span class="icon-arrow">&UpArrow;</span></th>
               <th>Department <span class="icon-arrow">&UpArrow;</span></th>
-              <th><span></span></th>
+              <th>Status <span class="icon-arrow">&UpArrow;</span></th>
             </tr>
           </thead>
 
@@ -158,6 +149,7 @@
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
+        // .filter((e) => e.userID === sessionStorage.getItem("employeeUID"))
         employees.forEach((employee) => {
           const employeeProfileImageRef = storageRef(
             storage,
@@ -166,10 +158,18 @@
 
           const rowHTML = `<tr>
               <td>${employee.EmployeeID}</td>
-              <td><a href="employeeDetails.html?userID=${employee.userID}"><img name="${employee.userID}_pp" src="/images/profile.png" alt="${employee.Name}_profile_picture"">${employee.Name}</a></td>
+              <td><a href="employeeDetails.html?userID=${
+                employee.userID
+              }"><img name="${
+            employee.userID
+          }_pp" src="/images/profile.png" alt="${
+            employee.Name
+          }_profile_picture"">${employee.Name}</a></td>
               <td>${employee.Department}</td>
               <td>
-                <a href="employeeDetails.html?userID=${employee.userID}">View profile</a>
+                <p class="status ${employee.Status?.toLowerCase()}">${
+            employee.Status
+          }</p>
               </td>
           </tr>`;
 
@@ -198,7 +198,7 @@
       }
 
       function GetAllDataRealTime() {
-        const dbRef = ref(db, "Employees");
+        const dbRef = ref(db, "employeesMC");
 
         onValue(dbRef, (snapshot) => {
           const employeesList = [];
