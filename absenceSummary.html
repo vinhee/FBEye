@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css" />
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="icon" type="image/png" href="/images/logo.png" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/attendance.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Absence Summary</title>
+  </head>
+
+  <body>
+    <header style="display: flex; margin-top: 20px">
+      <a href="admin.html"><img src="images/FBEYE.png" class="logo-img" /></a>
+
+      <input type="checkbox" id="nav_check" hidden />
+      <nav>
+        <ul>
+          <li>
+            <a href="homeE.html">Home</a>
+          </li>
+          <li>
+            <a href="index.html">Logout</a>
+          </li>
+        </ul>
+      </nav>
+      <label for="nav_check" class="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </label>
+    </header>
+
+    <div class="head1">
+      <button
+        class="position"
+        onclick="window.location.href = 'applyLeave.html'"
+        style="font-size: 20px"
+      >
+        + Apply Leave
+      </button>
+    </div>
+    <main class="table" style="width: 93vw; margin-top: 20px">
+      <section class="table__body">
+        <table>
+          <thead>
+            <tr style="color: white">
+              <th>Start Date <span class="icon-arrow">&UpArrow;</span></th>
+              <th>End Date <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Leave ID <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Absence Reason <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Approval Status <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Submitted On <span class="icon-arrow">&UpArrow;</span></th>
+            </tr>
+          </thead>
+
+          <!--original codes for table-->
+          <tbody id="myTableBody">
+            <!--sample-->
+            <!-- <tr>
+                            <td> 1 </td>
+                            <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
+                            <td> Sales </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:44:52 AM </td>
+                            <td> 05:55:07 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr> -->
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js"
+    ></script>
+    <script
+      type="module"
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js"
+    ></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+
+      import {
+        getDatabase,
+        update,
+        ref,
+        get,
+        child,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+
+      import {
+        getStorage,
+        getDownloadURL,
+        ref as storageRef,
+      } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
+        authDomain: "fbeye-bf2f1.firebaseapp.com",
+        databaseURL:
+          "https://fbeye-bf2f1-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "fbeye-bf2f1",
+        storageBucket: "fbeye-bf2f1.appspot.com",
+        messagingSenderId: "462631567055",
+        appId: "1:462631567055:web:bc8ee774e09e56e8fcc1ba",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase();
+      const storage = getStorage();
+
+      function AddAllItemsToTable(employees) {
+        const tableBody = document.getElementById("myTableBody");
+        let tableContent = "";
+
+        employees
+          .filter((e) => e.userID === sessionStorage.getItem("employeeUID"))
+          .forEach((employee) => {
+            const employeeProfileImageRef = storageRef(
+              storage,
+              `${employee.userID}.png`
+            );
+
+            const rowHTML = `<tr>
+                <td>${employee.StartDate}</td>
+                <td>${employee.EndDate}</td>
+                <td>${employee.LeaveID}</td>
+                <td>${employee.AbsenceReason}</td>
+                <td>${employee.ApprovalStatus}</td>
+                <td>${employee.SubmitDate}</td>
+                
+            </tr>`;
+
+            tableContent += rowHTML;
+          });
+
+        tableBody.innerHTML = tableContent;
+      }
+
+      function GetAllDataRealTime() {
+        const dbRef = ref(db, "employeeMC");
+
+        onValue(dbRef, (snapshot) => {
+          const employeesList = [];
+          snapshot.forEach((childSnapshot) => {
+            employeesList.push(childSnapshot.val());
+          });
+          AddAllItemsToTable(employeesList);
+        });
+      }
+
+      GetAllDataRealTime();
+
+      // window.onload = GetAllDataRealTime;
+    </script>
+  </body>
+</html>

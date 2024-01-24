@@ -183,6 +183,7 @@
                 // Adding node in database
                 set(ref(db, 'employeeMC/' + uniqueId),
                 {
+                    LeaveID : uniqueId,
                     Name: sessionStorage.getItem("employeeName"),
                     Employeeid: sessionStorage.getItem("employeeID"),
                     StartDate: document.getElementById("startDate").value,
@@ -194,8 +195,9 @@
                     AbsenceReason: "Medical Leave",
                     userID: sessionStorage.getItem("employeeUID")
                 });
-                alert("Request Submitted Successfully!");
-            });
+                console.log("Request Submitted Successfully!");
+                window.location.href="absenceSummary.html";
+              });
           }
           else if(selectOption === "Leave Request"){
             $("#mcForm").empty();
@@ -213,6 +215,7 @@
                 // Adding node in database
                 set(ref(db, 'employeeLeave/' + uniqueId),
                 {
+                    LeaveID: uniqueId,
                     Name: document.getElementById("name").value,
                     Employeeid: document.getElementById("employeeid").value,
                     StartDate: document.getElementById("startDate").value,
@@ -222,9 +225,10 @@
                     ApprovalStatus: "pending",
                     AbsenceReason: "Leave Request",
                     userID: sessionStorage.getItem("employeeUID")
-                    
+
                 });
-                alert("Request Submitted Successfully!");
+                console.log("Request Submitted Successfully!");
+                window.location.href="absenceSummary.html";
             });
           };
         });
