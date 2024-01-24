@@ -33,6 +33,20 @@ h6,
   flex-wrap: wrap;
 }
 
+.headC {
+  text-align: center;
+  font-size: 41px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  background: -webkit-linear-gradient(
+    right,
+    #4073ff,
+    #0149ea,
+    #3027d4,
+    #1331b5
+  );
+  -webkit-background-clip: text;
+}
 .position {
   margin-left: auto;
 }

@@ -33,7 +33,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Poppins:wght@300&display=swap"
       rel="stylesheet"
     />
-    <title>Leave Request</title>
+    <title>MC/Leave Request Summary</title>
   </head>
 
   <body>
@@ -44,10 +44,10 @@
       <nav>
         <ul>
           <li>
-            <a href="admin.html">Home</a>
+            <a href="leaveRequestSummary.html">Leave Request</a>
           </li>
           <li>
-            <a href="leaveRequest.html">Leave Request</a>
+            <a href="admin.html">Home</a>
           </li>
           <li>
             <a href="index.html">Logout</a>
@@ -61,15 +61,20 @@
       </label>
     </header>
 
+    <div class="headC">MC/Leave Request</div>
     <main class="table" style="width: 93vw; margin-top: 20px">
       <section class="table__body">
         <table>
           <thead>
             <tr style="color: white">
-              <th>Id <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Leave Id <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Employee Id <span class="icon-arrow">&UpArrow;</span></th>
               <th>Employee <span class="icon-arrow">&UpArrow;</span></th>
               <th>Department <span class="icon-arrow">&UpArrow;</span></th>
-              <th>Status <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Absence Reason <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Approval Status <span class="icon-arrow">&UpArrow;</span></th>
+              <th>Submitted On <span class="icon-arrow">&UpArrow;</span></th>
+              <th><span></span></th>
             </tr>
           </thead>
 
@@ -149,7 +154,10 @@
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
-        // .filter((e) => e.userID === sessionStorage.getItem("employeeUID"))
+        employees.sort((a, b) => {
+          return new Date(b.SubmitDate) - new Date(a.SubmitDate);
+        });
+
         employees.forEach((employee) => {
           const employeeProfileImageRef = storageRef(
             storage,
@@ -157,19 +165,15 @@
           );
 
           const rowHTML = `<tr>
-              <td>${employee.EmployeeID}</td>
-              <td><a href="employeeDetails.html?userID=${
-                employee.userID
-              }"><img name="${
-            employee.userID
-          }_pp" src="/images/profile.png" alt="${
-            employee.Name
-          }_profile_picture"">${employee.Name}</a></td>
+              <td>${employee.LeaveID}</td>
+              <td>${employee.Employeeid}</td>
+              <td><a href="employeeDetails.html?userID=${employee.userID}"><img name="${employee.userID}_pp" src="/images/profile.png" alt="${employee.Name}_profile_picture"">${employee.Name}</a></td>
               <td>${employee.Department}</td>
+              <td>${employee.AbsenceReason}</td>
+              <td>${employee.ApprovalStatus}</td>
+              <td>${employee.SubmitDate}</td>
               <td>
-                <p class="status ${employee.Status?.toLowerCase()}">${
-            employee.Status
-          }</p>
+                <a href="LeaveApprovalDetail.html?LeaveID=${employee.LeaveID}">View Leave Detail</a>
               </td>
           </tr>`;
 
@@ -198,7 +202,7 @@
       }
 
       function GetAllDataRealTime() {
-        const dbRef = ref(db, "employeesMC");
+        const dbRef = ref(db, "EmployeeLeave");
 
         onValue(dbRef, (snapshot) => {
           const employeesList = [];

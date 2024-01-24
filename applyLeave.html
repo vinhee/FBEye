@@ -193,7 +193,8 @@
                     SubmitDate: formatDateTime(Date.now()),
                     ApprovalStatus: "pending",
                     AbsenceReason: "Medical Leave",
-                    userID: sessionStorage.getItem("employeeUID")
+                    userID: sessionStorage.getItem("employeeUID"),
+                    Department: sessionStorage.getItem("employDepartment")
                 });
                 console.log("Request Submitted Successfully!");
                 window.location.href="absenceSummary.html";
@@ -224,7 +225,9 @@
                         SubmitDate: formatDateTime(Date.now()),
                         ApprovalStatus: "pending",
                         AbsenceReason: "Leave Request",
-                        userID: sessionStorage.getItem("employeeUID")
+                        userID: sessionStorage.getItem("employeeUID"),
+                        Department: sessionStorage.getItem("employDepartment")
+
                     });
                 console.log("Request Submitted Successfully!");
                 window.location.href = "absenceSummary.html";

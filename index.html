@@ -142,6 +142,8 @@
             sessionStorage.setItem("employeeName", employeeData.Name);
             sessionStorage.setItem("employeeID", employeeData.EmployeeID);
             sessionStorage.setItem("employRole", employeeData.Role);
+            sessionStorage.setItem("employDepartment", employeeData.Department);
+
           
               const dt = new Date();
               update(ref(database, 'Employees/' + userID), {
