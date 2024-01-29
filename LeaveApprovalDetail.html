@@ -79,19 +79,22 @@
        </div>
        <div class="form-row">
           <div class="input-data">
-             <span> Start Date</span><input type="date" id="startDate" required style="padding-bottom: 13px;">
+             <span> Start Date</span><input type="date" id="startDate" required style="padding-bottom: 13px;" readonly>
              <div class="underline"></div>
           </div>
           <div class="input-data">
-            <span> End Date</span><input type="date" id="endDate" required style="padding-bottom: 13px;">
+            <span> End Date</span><input type="date" id="endDate" required style="padding-bottom: 13px;" readonly>
             <div class="underline"></div>
           </div>
        </div>
-       <div class="form-row mcField" style="padding-top: 15px;" id="mcForm">
-
-      </div>
-      <div class="form-row mcField" style="padding-top: 15px;" id="mcFormPhoto">
-      </div>
+       <div class="form-row" style="padding-top: 15px;">
+          <div class="input-data" id="MCNo">
+            
+          </div>
+          <div class="input-data" id="medCenter">
+          
+          </div>
+       </div>
      
     </form>
    </div>
@@ -161,19 +164,43 @@
                     </div>`)
         
 
-        // if(employeeData.AbsenceReason === "Medical Leave"){
+        if(employeeData.AbsenceReason === "Medical Leave"){
 
 
-        // }
-        // else if(employeeData.AbsenceReason === "Leave Request"){
+            $("#MCNo").html(`
+              <span> MC Number </span>
+              <div style="padding-top:10px;">
+                <div class="underline"></div>
+              <span>${employeeData.MCNo}</span>
+                </div>
+              `)
+            $("#medCenter").html(`<span> Name of Clinic/Hospital </span>
+                    <div style="padding-top:10px;">
+                      <div class="underline"></div>
+                    <span>${employeeData.MedicalCentre}</span>
+                      </div>`)
 
+        }
+        else if(employeeData.AbsenceReason === "Leave Request"){
           
-        // }
+          $("#MCNo").html(`
+              <span> Reason for Leave </span>
+              <div style="padding-top:10px;">
+                <div class="underline"></div>
+              <span>${employeeData.Leave}</span>
+                </div>
+              `)
+        }
       
+
+
+        
+
+        
         
       }).catch((error) => {
         alert("error: ", error);
-        window.location.href = "admin.html";
+        window.location.href = "LeaveRequestSummary.html";
 
       });
       
