@@ -70,9 +70,9 @@
 <div class="col-12 col-sm-auto mb-3">
 <div class="mx-auto" style="width: 140px;">
 <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-  <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+  <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;" id="sizeImag">140x140</span>
   <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
-    <img id="selectedProfilePicture" style="max-width: 100%; max-height: 100%; display: none;">
+    <img id="selectedProfilePicture" style="width: 140px; height: 140px; display: none;">
   </div>
 </div>
 </div>
@@ -80,8 +80,8 @@
 <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
 <div class="text-center text-sm-left mb-2 mb-sm-0" style="margin-top: auto;">
 
-<div class="mt-2">
-<button class="btn btn-primary" type="button" onclick="document.getElementById('profilePicture').click();">
+<div class="mt-2">  
+<button id="addPicBtn" class="btn btn-primary" type="button">
     <i class="fa fa-fw fa-camera"></i>
     <span>Add Profile Picture</span>
 </button>
@@ -90,6 +90,7 @@
 </div>
 </div>
 
+ <!-- onclick="document.getElementById('profilePicture').click();" -->
 
 <div class="text-center text-sm-right">
 <span class="badge badge-secondary">administrator</span>
@@ -240,6 +241,7 @@
       }
     });
     
+
     function generateEmployeeID() {
       return generatedEmployeeID++;
     }
@@ -266,14 +268,14 @@
       const selectedProfilePicture = document.getElementById("selectedProfilePicture");
       const profilePictureFile = profilePictureInput.files[0];
 
-      if (profilePictureFile) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        selectedProfilePicture.src = e.target.result;
-        selectedProfilePicture.style.display = "block";
-      };
-      reader.readAsDataURL(profilePictureFile);
-    }
+    //   if (profilePictureFile) {
+    //   const reader = new FileReader();
+    //   reader.onload = function (e) {
+    //     selectedProfilePicture.src = e.target.result;
+    //     selectedProfilePicture.style.display = "block";
+    //   };
+    //   reader.readAsDataURL(profilePictureFile);
+    // }
 
     if (newPassword === confirmPassword) {
       createUserWithEmailAndPassword(auth, email, confirmPassword)
@@ -331,11 +333,38 @@
       alert("Password does not match!");
     }
   }
+
+  document.getElementById("addPicBtn").addEventListener("click", (e) => {
+        const profilePictureInput = document.getElementById("profilePicture");
+        const selectedProfilePicture = document.getElementById("selectedProfilePicture");
+
+        profilePictureInput.addEventListener("change", function () {
+            const profilePictureFile = profilePictureInput.files[0];
+
+            if (profilePictureFile) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    selectedProfilePicture.src = e.target.result;
+                    selectedProfilePicture.style.display = "block";
+                    sizeImag.style.display = "none"; 
+
+                  };
+                reader.readAsDataURL(profilePictureFile);
+            }
+        });
+
+        // Trigger the file input click event
+        profilePictureInput.click();
+    });
+
+    
     document.getElementById("addRecord").addEventListener("click", (e) => {
       e.preventDefault();
       createUser();
     });
+    
 
+    
 
   </script>
 </body>
