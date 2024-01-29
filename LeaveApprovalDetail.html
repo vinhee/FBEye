@@ -66,11 +66,7 @@
           <label for="">Absence Reason</label>
           
     
-          <select name="leaveRequest" id="leaveRequest">
-            <option value="-">--</option>
-            <option value="Submit MC">Submit MC</option>       
-            <option value="Leave Request">Leave Request</option>       
-          </select> 
+          <input name="leaveRequest" id="leaveRequest" readonly></input> 
           
      </div>
        <div class="form-row" style="padding-top: 15px;">
@@ -100,30 +96,23 @@
     </form>
    </div>
 
-   <script>
-    document.getElementById("homepage").onclick = function(){
+
+    <script type="module">
+
+       document.getElementById("homepage").onclick = function(){
       if (sessionStorage.getItem("employRole") == "Employee") {
             window.location.href = "home.html";
           }
           else if (sessionStorage.getItem("employRole") == "Employer") {
             window.location.href = "homeE.html";
           }
+          else if (sessionStorage.getItem("employRole") == "Admin") {
+            window.location.href = "admin.html";
+          }
+
     }
-    $("#employeeName").html(`
-             <span> Employee Name</span>
-             <div style="padding-top:10px;">
-              <div class="underline"></div>
-             <span>${sessionStorage.getItem("employeeName")}</span>
-              </div>
-            `)
-    $("#employeeID").html(`<span> Employee ID</span>
-             <div style="padding-top:10px;">
-              <div class="underline"></div>
-             <span>${sessionStorage.getItem("employeeID")}</span>
-              </div>`)
-   </script>
-    
-    <script type="module">
+
+
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
       import { getStorage, ref as storageRef, uploadString } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
@@ -140,20 +129,62 @@
       };
 
       const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      const storage = getStorage(app);
+      const urlParams = new URLSearchParams(window.location.search);
+      const leaveID = urlParams.get('LeaveID');
+    
 
-      const db = getDatabase(app);
+      const employeeRef = ref(database, `EmployeeLeave/${leaveID}`);
+      get(employeeRef).then((snapshot) => {
+        const employeeData = snapshot.val();
 
-      function formatDateTime(date) {
-      return new Date(date).toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
+
+
+        document.getElementById("leaveRequest").value = employeeData.AbsenceReason;
+        document.getElementById("employeeName").value = employeeData.Name;
+        document.getElementById("employeeID").value = employeeData.Employeeid;
+        document.getElementById("startDate").value = employeeData.StartDate;
+        document.getElementById("endDate").value = employeeData.EndDate;
+
+         $("#employeeName").html(`
+             <span> Employee Name</span>
+             <div style="padding-top:10px;">
+              <div class="underline"></div>
+             <span>${employeeData.Name}</span>
+              </div>
+            `)
+          $("#employeeID").html(`<span> Employee ID</span>
+                  <div style="padding-top:10px;">
+                    <div class="underline"></div>
+                  <span>${employeeData.Employeeid}</span>
+                    </div>`)
+        
+
+        // if(employeeData.AbsenceReason === "Medical Leave"){
+
+
+        // }
+        // else if(employeeData.AbsenceReason === "Leave Request"){
+
+          
+        // }
+      
+        
+      }).catch((error) => {
+        alert("error: ", error);
+        window.location.href = "admin.html";
+
       });
-    }
+      
+
+
+
+
+
+
+
+
 
    
     </script>
@@ -162,5 +193,6 @@
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
   </body>
 </html>
