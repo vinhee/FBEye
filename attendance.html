@@ -183,7 +183,7 @@
         employees.forEach((employee) => {
           const employeeProfileImageRef = storageRef(
             storage,
-            `${employee.userID}.png`
+            `ProfilePicture/${employee.userID}.png`
           );
 
           getDownloadURL(employeeProfileImageRef).then((url) => {
