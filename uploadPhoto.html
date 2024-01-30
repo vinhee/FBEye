@@ -15,7 +15,7 @@
   <body>
 
     <header style="display: flex; margin-top: 20px;">
-        <img src="images/FBEYE.png" class="logo-img">
+        <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -80,6 +80,7 @@
       const progressbar = document.querySelector(".progress");
       const img = document.querySelector(".img");
       const fileData = document.querySelector(".filedata");
+      //const loading = document.querySelector(".loading");
       const inputImage = document.querySelector('.selectImage');
       const inputFile = document.querySelector('#file');
       const imgArea = document.querySelector('.img-area');
@@ -128,7 +129,7 @@
           alert("Please select an image before uploading.");
           return;
         }
-        const folderRef = storage.ref().child(sessionStorage.getItem("employeeUID") + ".png");
+        const folderRef = storage.ref().child("ProfilePicture/" + sessionStorage.getItem("employeeUID") + ".png");
         const uploadtask = folderRef.put(file);
         uploadtask.on(
           "state_changed",

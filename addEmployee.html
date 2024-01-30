@@ -284,7 +284,7 @@
           const userID = user.uid;
 
           if (profilePictureFile) {
-            const storageReference = storageRef(storage, userID + '.png');
+            const storageReference = storageRef(storage, `ProfilePicture/${userID}.png`);
             uploadBytes(storageReference, profilePictureFile)
               .then(() => {
                 set(ref(database, 'Employees/' + userID), {
