@@ -63,9 +63,6 @@
         <table>
           <thead>
             <tr style="color: white">
-              <th>Id <span class="icon-arrow">&UpArrow;</span></th>
-              <th>Employee <span class="icon-arrow">&UpArrow;</span></th>
-              <th>Department <span class="icon-arrow">&UpArrow;</span></th>
               <th>Date <span class="icon-arrow">&UpArrow;</span></th>
               <th>Clock In Time <span class="icon-arrow">&UpArrow;</span></th>
               <th>Clock Out Time <span class="icon-arrow">&UpArrow;</span></th>
@@ -73,20 +70,8 @@
             </tr>
           </thead>
 
-          <!--original codes for table-->
           <tbody id="myTableBody">
-            <!--sample-->
-            <!-- <tr>
-                            <td> 1 </td>
-                            <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
-                            <td> Sales </td>
-                            <td> 17 Dec, 2022 </td>
-                            <td> 08:44:52 AM </td>
-                            <td> 05:55:07 PM </td>
-                            <td>
-                                <p class="status present">Present</p>
-                            </td>
-                        </tr> -->
+            <!-- Attendance records will be inserted here dynamically -->
           </tbody>
         </table>
       </section>
@@ -145,78 +130,122 @@
       const db = getDatabase();
       const storage = getStorage();
 
-      function AddAllItemsToTable(employees) {
+      const userID = sessionStorage.getItem("employeeUID");
+
+      function AddAllItemsToTable(clockInData, clockOutData, employeeDetails) {
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
-        employees
-          .filter((e) => e.userID === sessionStorage.getItem("employeeUID"))
-          .forEach((employee) => {
-            const employeeProfileImageRef = storageRef(
-              storage,
-              `${employee.userID}.png`
-            );
+        // Filter data for the specific user
+        const userClockInData = clockInData.filter(
+          (entry) => entry.userID === userID
+        );
+        const userClockOutData = clockOutData.filter(
+          (entry) => entry.userID === userID
+        );
 
-            const rowHTML = `<tr>
-                <td>${employee.EmployeeID}</td>
-                <td><img name="${
-                  employee.userID
-                }_pp" src="/images/profile.png" alt="${
-              employee.Name
-            }_profile_picture"">${employee.Name}</td>
-                <td>${employee.Department}</td>
-                <td>${employee.Date}</td>
-                <td>${employee.ClockInTime ? employee.ClockInTime : "-"}</td>
-                <td>${employee.ClockOutTime ? employee.ClockOutTime : "-"}</td>
-                <td>
-                    <p class="status ${employee.Status?.toLowerCase()}">${
-              employee.Status
-            }</p>
-                </td>
-            </tr>`;
+        // Check if the user has any ClockIn entries
+        const hasClockInEntries = userClockInData.length > 0;
 
-            tableContent += rowHTML;
-          });
+        // Define getClockOutTime function
+        function getClockOutTime(clockOutData, date) {
+          const entry = clockOutData.find((outEntry) => outEntry.Date === date);
+          return entry ? entry.ClockOutTime : null;
+        }
 
-        tableBody.innerHTML = tableContent;
-
-        employees.forEach((employee) => {
-          const employeeProfileImageRef = storageRef(
-            storage,
-            `ProfilePicture/${employee.userID}.png`
+        // Iterate over dates
+        userClockInData.forEach((entry) => {
+          const clockOutTime = getClockOutTime(userClockOutData, entry.Date);
+          const attendanceStatus = getAttendanceStatus(
+            entry.ClockInTime,
+            clockOutTime
           );
 
-          getDownloadURL(employeeProfileImageRef).then((url) => {
-            if (url) {
-              const profileImages = document.getElementsByName(
-                `${employee.userID}_pp`
-              );
+          const rowHTML = `<tr>
+      <td>${entry.Date}</td>
+      <td>${entry.ClockInTime || "-"}</td>
+      <td>${clockOutTime || "-"}</td>
+      <td>
+        <p class="status ${attendanceStatus}">${attendanceStatus}</p>
+      </td>
+    </tr>`;
 
-              console.log({ profileImages });
-
-              profileImages.forEach((pImage) => {
-                pImage.src = url;
-              });
-            }
-          });
+          tableContent += rowHTML;
         });
+
+        // If the user has no ClockIn entries, mark them as Absent
+        if (!hasClockInEntries) {
+          const today = new Date().toISOString().slice(0, 10);
+          const rowHTML = `<tr>
+      <td>${today}</td>
+      <td>-</td>
+      <td>-</td>
+      <td>
+        <p class="status Absent">Absent</p>
+      </td>
+    </tr>`;
+          tableContent += rowHTML;
+        }
+
+        // Update the table body with the generated content
+        tableBody.innerHTML = tableContent;
+      }
+
+      function getAttendanceStatus(clockInTime, clockOutTime) {
+        if (clockInTime) {
+          return "Present";
+        } else if (clockOutTime) {
+          return "Absent (Clock In Missed)";
+        } else {
+          return "Absent";
+        }
       }
 
       function GetAllDataRealTime() {
-        const dbRef = ref(db, "EmployeesStatus");
+        const clockInRef = ref(db, "ClockInLog");
+        const clockOutRef = ref(db, "ClockOutLog");
 
-        onValue(dbRef, (snapshot) => {
-          const employeesList = [];
-          snapshot.forEach((childSnapshot) => {
-            employeesList.push(childSnapshot.val());
-          });
-          AddAllItemsToTable(employeesList);
-        });
+        Promise.all([get(clockInRef), get(clockOutRef)]).then(
+          ([clockInSnapshot, clockOutSnapshot]) => {
+            const clockInData = [];
+            clockInSnapshot.forEach((dateSnapshot) => {
+              dateSnapshot.forEach((childSnapshot) => {
+                const entry = {
+                  userID: childSnapshot.key,
+                  Date: dateSnapshot.key,
+                  ClockInTime: childSnapshot.val(),
+                };
+                clockInData.push(entry);
+              });
+            });
+
+            const clockOutData = [];
+            clockOutSnapshot.forEach((dateSnapshot) => {
+              dateSnapshot.forEach((childSnapshot) => {
+                const entry = {
+                  userID: childSnapshot.key,
+                  Date: dateSnapshot.key,
+                  ClockOutTime: childSnapshot.val(),
+                };
+                clockOutData.push(entry);
+              });
+            });
+
+            // Retrieve additional details about employees from the Employees node
+            const employeesDetailsRef = ref(db, "Employees");
+            get(employeesDetailsRef).then((detailsSnapshot) => {
+              const employeesDetails = [];
+              detailsSnapshot.forEach((employeeSnapshot) => {
+                employeesDetails.push(employeeSnapshot.val());
+              });
+
+              AddAllItemsToTable(clockInData, clockOutData, employeesDetails);
+            });
+          }
+        );
       }
 
       GetAllDataRealTime();
-
-      // window.onload = GetAllDataRealTime;
     </script>
   </body>
 </html>

@@ -145,7 +145,12 @@
       const db = getDatabase();
       const storage = getStorage();
 
-      function AddAllItemsToTable(clockInData, clockOutData, employeesDetails) {
+      function AddAllItemsToTable(
+        clockInData,
+        clockOutData,
+        employeesDetails,
+        employeeLeaveData
+      ) {
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
@@ -174,11 +179,34 @@
               (entry) => entry.userID === userID && entry.Date === date
             );
 
+            // Find leave entry matching the date
+            const leaveEntry = employeeLeaveData.find(
+              (entry) =>
+                entry.userID === userID &&
+                new Date(entry.StartDate).toLocaleDateString() <=
+                  new Date(date).toLocaleDateString() &&
+                new Date(entry.EndDate).toLocaleDateString() >=
+                  new Date(date).toLocaleDateString() &&
+                entry.ApprovalStatus === "Approved"
+            );
+
+            // Update status based on clock in and out entries and leave reason
+            let status = "";
+            if (leaveEntry) {
+              if (leaveEntry.LeaveReason === "Medical Leave") {
+                status = "Medical Leave";
+              } else {
+                status = "On Leave";
+              }
+            } else {
+              status = clockInEntry ? "Present" : "Absent";
+            }
+
             return {
               ...employeeDetails,
               clockInTime: clockInEntry ? clockInEntry.ClockInTime : null,
               clockOutTime: clockOutEntry ? clockOutEntry.ClockOutTime : null,
-              status: clockInEntry ? "Present" : "Absent",
+              status: status,
             };
           });
 
@@ -241,9 +269,14 @@
       function GetAllDataRealTime() {
         const clockInRef = ref(db, "ClockInLog");
         const clockOutRef = ref(db, "ClockOutLog");
+        const employeeLeaveRef = ref(db, "EmployeeLeave");
 
-        Promise.all([get(clockInRef), get(clockOutRef)]).then(
-          ([clockInSnapshot, clockOutSnapshot]) => {
+        Promise.all([
+          get(clockInRef),
+          get(clockOutRef),
+          get(employeeLeaveRef),
+        ]).then(
+          ([clockInSnapshot, clockOutSnapshot, employeeLeaveSnapshot]) => {
             const clockInData = [];
             clockInSnapshot.forEach((dateSnapshot) => {
               dateSnapshot.forEach((childSnapshot) => {
@@ -268,6 +301,19 @@
               });
             });
 
+            const employeeLeaveData = [];
+
+            employeeLeaveSnapshot.forEach((userSnapshot) => {
+              userSnapshot.forEach((entrySnapshot) => {
+                const leaveID = entrySnapshot.key; // Assuming leaveid is stored as the key
+                const entry = {
+                  leaveID: leaveID,
+                  ...entrySnapshot.val(), // Include other details from the entry
+                };
+                employeeLeaveData.push(entry);
+              });
+            });
+
             // Retrieve additional details about employees from the Employees node
             const employeesDetailsRef = ref(db, "Employees");
             get(employeesDetailsRef).then((detailsSnapshot) => {
@@ -275,8 +321,12 @@
               detailsSnapshot.forEach((employeeSnapshot) => {
                 employeesDetails.push(employeeSnapshot.val());
               });
-
-              AddAllItemsToTable(clockInData, clockOutData, employeesDetails);
+              AddAllItemsToTable(
+                clockInData,
+                clockOutData,
+                employeesDetails,
+                employeeLeaveData
+              );
             });
           }
         );
