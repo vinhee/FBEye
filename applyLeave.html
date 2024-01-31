@@ -198,12 +198,31 @@
 
             document.getElementById("submit").addEventListener('click', function(e){
                 e.preventDefault();
-                var uniqueId = 'id' + (new Date()).getTime();
+                var uniqueId = 'id' + (new Date()).getTime();      
+                var mcNo = document.getElementById("MCno").value.trim();
+                var medicalCentre = document.getElementById("medicalCentre").value.trim();
+                var startDate = document.getElementById("startDate").value.trim();
+                var endDate = document.getElementById("endDate").value.trim();
+
+                if (mcNo === "" || medicalCentre === "") {
+                    alert("Please enter both the MC Number and the Name of the Clinic/Hospital");
+                    return;
+                }
                
-                 const mcPhotoInput = document.getElementById("mcPhoto");
-                 const mcPhotoFile = mcPhotoInput.files[0];
+                if (startDate === "" || endDate === "") {
+                    alert("Please enter both start date and end date before submitting the form.");
+                    return;
+                }
+
+                const mcPhotoInput = document.getElementById("mcPhoto");
+                const mcPhotoFile = mcPhotoInput.files[0];
+
+                 if (!mcPhotoFile) {
+                    alert("Please upload the MC Photo before submitting the form.");
+                    return;
+                }
+
                  const mcPhotoRef = storageRef(storage, 'MC/' + uniqueId);
-                 
                  uploadBytes(mcPhotoRef, mcPhotoFile);
 
                 set(ref(db, 'EmployeeLeave/' + uniqueId),
@@ -239,9 +258,21 @@
             `);
             document.getElementById("submit").addEventListener('click', function (e) {
                 e.preventDefault();
-                // To be fixed so that it is always UNIQUE
                 var uniqueId = 'id' + (new Date()).getTime();
-                // Adding node in database
+                var leave = document.getElementById("leave").value.trim();
+                var startDate = document.getElementById("startDate").value.trim();
+                var endDate = document.getElementById("endDate").value.trim();
+
+                if(leave === ""){
+                    alert("Please enter the reason for leave");
+                    return;
+                }
+
+                if (startDate === "" || endDate === "") {
+                    alert("Please enter both start date and end date");
+                    return;
+                }
+
                 set(ref(db, 'EmployeeLeave/' + uniqueId),
                     {
                         LeaveID: uniqueId,
