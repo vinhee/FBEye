@@ -144,58 +144,91 @@
       const app = initializeApp(firebaseConfig);
       const db = getDatabase();
       const storage = getStorage();
-
       function AddAllItemsToTable(clockInData, clockOutData, employeesDetails) {
-        // Sort the clockInData array in descending order based on date and time
-        clockInData.sort((a, b) => {
-          const dateComparison = b.Date.localeCompare(a.Date);
-          if (dateComparison === 0) {
-            // If the dates are the same, compare by clock in time
-            return (b.ClockInTime || "").localeCompare(a.ClockInTime || "");
-          }
-          return dateComparison;
-        });
-
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
-        clockInData.forEach((clockInEntry) => {
-          const userID = clockInEntry.userID;
-          const date = clockInEntry.Date;
+        employeesDetails.forEach((employeeDetails) => {
+          const userID = employeeDetails.userID;
 
-          const clockOutEntry = clockOutData.find(
-            (clockOut) => clockOut.userID === userID && clockOut.Date === date
+          // Filter clock-in entries for the current user
+          const userClockInEntries = clockInData.filter(
+            (entry) => entry.userID === userID
           );
 
-          const employeeDetails = employeesDetails.find(
-            (details) => details.userID === userID
-          );
+          // Sort clock-in entries in descending order based on date and time
+          userClockInEntries.sort((a, b) => {
+            const dateComparison = b.Date.localeCompare(a.Date);
+            if (dateComparison === 0) {
+              // If the dates are the same, compare by clock in time
+              return (b.ClockInTime || "").localeCompare(a.ClockInTime || "");
+            }
+            return dateComparison;
+          });
 
-          if (employeeDetails) {
+          // If the employee has no clock-in entries, add a row with "Absent" status
+          if (userClockInEntries.length === 0) {
             const rowHTML = `<tr>
-          <td>${employeeDetails.EmployeeID}</td>
-          <td><img name="${userID}_pp" src="/images/profile.png" alt="${
-              employeeDetails.Name
-            }_profile_picture">${employeeDetails.Name}</td>
-          <td>${employeeDetails.Department}</td>
-          <td>${date}</td>
-          <td>${clockInEntry.ClockInTime ? clockInEntry.ClockInTime : "-"}</td>
-          <td>${clockOutEntry ? clockOutEntry.ClockOutTime : "-"}</td>
-          <td>
-            <p class="status ${employeeDetails.Status?.toLowerCase()}">${
-              employeeDetails.Status
-            }</p>
-          </td>
-        </tr>`;
+                <td>${employeeDetails.EmployeeID}</td>
+                <td><img name="${userID}_pp" src="/images/profile.png" alt="${employeeDetails.Name}_profile_picture">${employeeDetails.Name}</td>
+                <td>${employeeDetails.Department}</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>
+                    <p class="status absent">Absent</p>
+                </td>
+            </tr>`;
 
+            // Append the row to the table content
             tableContent += rowHTML;
+
+            // Update the status in the employeesDetails array
+            employeeDetails.Status = "Absent";
+          } else {
+            // Check if the employee has clocked out for each clock-in entry
+            userClockInEntries.forEach((clockInEntry) => {
+              const clockOutEntry = clockOutData.find(
+                (entry) =>
+                  entry.userID === userID && entry.Date === clockInEntry.Date
+              );
+
+              // Determine the status based on clock-in and clock-out entries
+              let status = "Absent";
+              if (clockInEntry) {
+                status = "Present";
+              }
+
+              // Create the table row HTML
+              const rowHTML = `<tr>
+                    <td>${employeeDetails.EmployeeID}</td>
+                    <td><img name="${userID}_pp" src="/images/profile.png" alt="${
+                employeeDetails.Name
+              }_profile_picture">${employeeDetails.Name}</td>
+                    <td>${employeeDetails.Department}</td>
+                    <td>${clockInEntry.Date}</td>
+                    <td>${clockInEntry.ClockInTime}</td>
+                    <td>${clockOutEntry ? clockOutEntry.ClockOutTime : "-"}</td>
+                    <td>
+                        <p class="status ${status.toLowerCase()}">${status}</p>
+                    </td>
+                </tr>`;
+
+              // Append the row to the table content
+              tableContent += rowHTML;
+
+              // Update the status in the employeesDetails array
+              employeeDetails.Status = status;
+            });
           }
         });
 
+        // Update the table body with the generated content
         tableBody.innerHTML = tableContent;
 
-        clockInData.forEach((entry) => {
-          const userID = entry.userID;
+        // Update profile images
+        employeesDetails.forEach((employeeDetails) => {
+          const userID = employeeDetails.userID;
           const employeeProfileImageRef = storageRef(
             storage,
             `ProfilePicture/${userID}.png`
@@ -257,7 +290,6 @@
       }
 
       GetAllDataRealTime();
-
       // window.onload = GetAllDataRealTime;
     </script>
   </body>
