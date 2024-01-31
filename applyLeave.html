@@ -94,6 +94,9 @@
        <div class="form-row mcField" style="padding-top: 15px;" id="mcForm">
 
       </div>
+       <div class="form-row mcField" style="padding-top: 15px;" id="mcFormPhoto">
+      </div>
+
      
       
       <div class="form-row submit-btn" style="padding-top: 40px;">
@@ -128,6 +131,7 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+      import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
@@ -141,6 +145,7 @@
       };
 
       const app = initializeApp(firebaseConfig);
+      const storage = getStorage(app);
 
       const db = getDatabase(app);
 
@@ -164,6 +169,8 @@
 
           if(selectOption === "Submit MC"){
               $("#mcForm").empty();
+              $("#mcFormPhoto").empty();
+
               $("#mcForm").html(`
           <div class="input-data mc-number">
             <input type="text" id="MCno" required>
@@ -175,12 +182,30 @@
             <div class="underline"></div>
             <label for="">Name of Clinic/Hospital</label>
           </div>`);
+           $("#mcFormPhoto").html(`
+           <div class="input-data mc-photo">
+          <div class="file-upload">
+            <span id="file-selected"> Upload MC </span>
+          </div>
+          </div>
+          <div class="input-data mc-photo">
+          <div class="file-upload">
+            <input type="file" id="mcPhoto" accept="image/*" required>
+          </div>
+          </div>
+
+          `);
 
             document.getElementById("submit").addEventListener('click', function(e){
                 e.preventDefault();
                 var uniqueId = 'id' + (new Date()).getTime();
                
-                // Adding node in database
+                 const mcPhotoInput = document.getElementById("mcPhoto");
+                 const mcPhotoFile = mcPhotoInput.files[0];
+                 const mcPhotoRef = storageRef(storage, 'MC/' + uniqueId);
+                 
+                 uploadBytes(mcPhotoRef, mcPhotoFile);
+
                 set(ref(db, 'EmployeeLeave/' + uniqueId),
                 {
                     LeaveID : uniqueId,
@@ -196,12 +221,15 @@
                     userID: sessionStorage.getItem("employeeUID"),
                     Department: sessionStorage.getItem("employDepartment")
                 });
-                console.log("Request Submitted Successfully!");
-                window.location.href="absenceSummary.html";
+                alert("Request Submitted Successfully!");
+                // window.location.href="absenceSummary.html";
+
               });
+
           }
           else if (selectOption === "Leave Request") {
             $("#mcForm").empty();
+            $("#mcFormPhoto").empty();
             $("#mcForm").html(`
                 <div class="input-data reason-for-leave">
                     <input type="text" id="leave" required>
@@ -229,8 +257,8 @@
                         Department: sessionStorage.getItem("employDepartment")
 
                     });
-                console.log("Request Submitted Successfully!");
-                window.location.href = "absenceSummary.html";
+                alert("Request Submitted Successfully!");
+                // window.location.href = "absenceSummary.html";
             });
           };
         });
