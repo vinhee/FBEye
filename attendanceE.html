@@ -146,6 +146,16 @@
       const storage = getStorage();
 
       function AddAllItemsToTable(clockInData, clockOutData, employeesDetails) {
+        // Sort the clockInData array in descending order based on date and time
+        clockInData.sort((a, b) => {
+          const dateComparison = b.Date.localeCompare(a.Date);
+          if (dateComparison === 0) {
+            // If the dates are the same, compare by clock in time
+            return (b.ClockInTime || "").localeCompare(a.ClockInTime || "");
+          }
+          return dateComparison;
+        });
+
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
