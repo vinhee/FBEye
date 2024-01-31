@@ -12,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-
+    <link rel="stylesheet" href="css/leaveApprovalDetail.css">
     <!-- Style -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/applyLeave.css">
@@ -98,14 +98,17 @@
        </div>
 
         <div class="form-row" style="padding-top: 15px;">
-          <div class="input-data" id="imgText">
-            
-          </div>
-          <div class="input-data" id="viewMC">
-          
-          </div>
-          
+          <div class="input-data" id="imgText"></div>
+          <div class="input-data" id="viewMC"></div>     
        </div>
+
+       <div id="mcModal" class="modal">
+        <div class="modal-content">
+          <span class="close" id="closeBtn">&times;</span>
+          <img id="mcImage" src="" alt="MC Image">
+        </div>
+      </div>
+
 
        <div class="form-row" style="padding-top: 15px;">
           <input type="submit" value="accept" id="acc-btn" class="acc-btn">
@@ -133,7 +136,7 @@
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getDatabase, ref, update, get } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-    import { getStorage, ref as storageRef, uploadString } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+    import { getStorage, ref as storageRef, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
@@ -151,8 +154,27 @@
     const storage = getStorage(app);
     const urlParams = new URLSearchParams(window.location.search);
     const leaveID = urlParams.get('LeaveID');
-
     const employeeRef = ref(database, `EmployeeLeave/${leaveID}`);
+    const closeBtn = document.getElementById("closeBtn");
+
+    function openModal(mcImageUrl) {
+      const mcImageElement = document.getElementById("mcImage");
+      mcImageElement.src = mcImageUrl;
+      document.getElementById("mcModal").style.display = "flex";
+    }
+
+    // Function to close the modal
+    function closeModal() {
+      var modal = document.getElementById("mcModal");
+      modal.style.display = "none";
+    }
+    
+    closeBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeModal();
+    });
+
+    
     get(employeeRef).then((snapshot) => {
       const employeeData = snapshot.val();
 
@@ -205,6 +227,24 @@
 
         `);
 
+        document.getElementById("view-btn").addEventListener("click", function (e) {
+          e.preventDefault();
+
+          // Assuming you have a field named "mcLeaveID" in your database that stores the MC/leaveID
+          const mcLeaveID = employeeData.LeaveID;
+
+          // Retrieve the MC image URL from Firebase Storage based on the MC/leaveID
+          const mcImageRef = storageRef(storage, `MC/${leaveID}`);
+          getDownloadURL(mcImageRef)
+            .then((url) => {
+              // Open the modal with the retrieved MC image URL
+              openModal(url);
+            })
+            .catch((error) => {
+              console.error("Error retrieving MC image:", error);
+              // Handle the error (e.g., display an alert)
+            });
+        });
 
       } else if (employeeData.AbsenceReason === "Leave Request") {
         $("#MCNo").html(`
