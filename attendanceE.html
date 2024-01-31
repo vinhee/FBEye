@@ -144,53 +144,75 @@
       const app = initializeApp(firebaseConfig);
       const db = getDatabase();
       const storage = getStorage();
+
       function AddAllItemsToTable(clockInData, clockOutData, employeesDetails) {
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
-        // Get all unique dates from clock-in entries
+        // Convert and sort dates in descending order
         const allDates = Array.from(
           new Set(clockInData.map((entry) => entry.Date))
-        ).sort((a, b) => new Date(b) - new Date(a));
+        ).sort((a, b) => {
+          // Convert date strings from dd-mm-yyyy to mm-dd-yyyy
+          const [dayA, monthA, yearA] = a.split("-");
+          const [dayB, monthB, yearB] = b.split("-");
+          const dateA = new Date(`${monthA}/${dayA}/${yearA}`);
+          const dateB = new Date(`${monthB}/${dayB}/${yearB}`);
+          return dateB - dateA;
+        });
 
-        // Reverse the order of dates (latest date first)
-        const reversedDates = allDates.reverse();
-        // Iterate over sorted dates
-        reversedDates.forEach((date) => {
-          employeesDetails.forEach((employeeDetails) => {
+        // Iterate over sorted dates and sort by time within each date
+        allDates.forEach((date) => {
+          const dailyEntries = employeesDetails.map((employeeDetails) => {
             const userID = employeeDetails.userID;
-            // Find clock-in entry for the current user and date
+
             const clockInEntry = clockInData.find(
               (entry) => entry.userID === userID && entry.Date === date
             );
-            // Find clock-out entry for the current user and date
+
             const clockOutEntry = clockOutData.find(
               (entry) => entry.userID === userID && entry.Date === date
             );
 
-            // Determine the status based on clock-in and clock-out entries
-            let status = clockInEntry ? "Present" : "Absent";
+            return {
+              ...employeeDetails,
+              clockInTime: clockInEntry ? clockInEntry.ClockInTime : null,
+              clockOutTime: clockOutEntry ? clockOutEntry.ClockOutTime : null,
+              status: clockInEntry ? "Present" : "Absent",
+            };
+          });
 
-            // Create the table row HTML
+          // Sort by ClockInTime within the same date
+          dailyEntries.sort((a, b) => {
+            if (!a.clockInTime) return 1; // Sort absent to the bottom
+            if (!b.clockInTime) return -1;
+            return (
+              new Date(`1970/01/01 ${b.clockInTime}`) -
+              new Date(`1970/01/01 ${a.clockInTime}`)
+            );
+          });
+
+          // Generate table rows for the sorted entries
+          dailyEntries.forEach((entry) => {
             const rowHTML = `<tr>
-              <td>${employeeDetails.EmployeeID}</td>
-              <td><img name="${userID}_pp" src="/images/profile.png" alt="${
-              employeeDetails.Name
-            }_profile_picture">${employeeDetails.Name}</td>
-              <td>${employeeDetails.Department}</td>
-              <td>${date}</td>
-              <td>${clockInEntry ? clockInEntry.ClockInTime : "-"}</td>
-              <td>${clockOutEntry ? clockOutEntry.ClockOutTime : "-"}</td>
-              <td>
-                <p class="status ${status.toLowerCase()}">${status}</p>
-              </td>
-            </tr>`;
+                <td>${entry.EmployeeID}</td>
+                <td><img name="${
+                  entry.userID
+                }_pp" src="/images/profile.png" alt="${
+              entry.Name
+            }_profile_picture">${entry.Name}</td>
+                <td>${entry.Department}</td>
+                <td>${date}</td>
+                <td>${entry.clockInTime || "-"}</td>
+                <td>${entry.clockOutTime || "-"}</td>
+                <td>
+                  <p class="status ${entry.status.toLowerCase()}">${
+              entry.status
+            }</p>
+                </td>
+              </tr>`;
 
-            // Append the row to the table content
             tableContent += rowHTML;
-
-            // Update the status in the employeesDetails array
-            employeeDetails.Status = status;
           });
         });
 
