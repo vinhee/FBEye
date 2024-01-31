@@ -94,20 +94,28 @@
           <div class="input-data" id="medCenter">
           
           </div>
-
-          
-          <div class="form-row accept-btn" style="padding-top: 40px;">
-                <div class="inner"></div>
-                <input type="submit" value="accept" id="acc-btn" class="acc-btn">
-            </div>
-
-            <div class="form-row reject-btn" style="padding-top: 40px;">
-                <div class="inner"></div>
-                <input type="submit" value="reject" id="reject-btn" class="rej-btn">
-            </div>
-            
           
        </div>
+
+        <div class="form-row" style="padding-top: 15px;">
+          <div class="input-data" id="imgText">
+            
+          </div>
+          <div class="input-data" id="viewMC">
+          
+          </div>
+          
+       </div>
+
+       <div class="form-row" style="padding-top: 15px;">
+          <input type="submit" value="accept" id="acc-btn" class="acc-btn">
+          <input type="submit" value="reject" id="reject-btn" class="rej-btn">
+          
+       </div>
+
+       
+
+    
      
     </form>
    </div>
@@ -186,6 +194,18 @@
             <span>${employeeData.MedicalCentre}</span>
           </div>
         `);
+
+        $("#imgText").html(`
+          <span> MC Number </span>
+          
+        `);
+
+        $("#viewMC").html(`
+          <input type="submit" value="View MC" id="view-btn" class="view-btn">
+
+        `);
+
+
       } else if (employeeData.AbsenceReason === "Leave Request") {
         $("#MCNo").html(`
           <span> Reason for Leave </span>

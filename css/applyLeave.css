@@ -113,6 +113,23 @@ form .form-row .textarea {
   transform: scale(1);
 }
 
+.view-btn {
+  color: black;
+  border: none;
+  background-color: rgb(216, 226, 255);
+  color: rgb(17, 67, 206);
+  border-radius: 0.5rem;
+  padding: 0.5rem 3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+}
+
+.view-btn:hover {
+  background-color: rgb(230, 236, 253);
+  color: rgb(17, 67, 206);
+}
+
 .acc-btn {
   color: black;
   border: none;
