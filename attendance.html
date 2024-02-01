@@ -165,12 +165,19 @@
         }
 
         // Create a set of dates to iterate over (this example uses the dates found in clockInData, but you might need a more comprehensive list)
-        const dates = Array.from(
+        const allDates = Array.from(
           new Set(clockInData.map((entry) => entry.Date))
-        ).sort();
+        ).sort((a, b) => {
+          // Convert date strings from dd-mm-yyyy to mm-dd-yyyy
+          const [dayA, monthA, yearA] = a.split("-");
+          const [dayB, monthB, yearB] = b.split("-");
+          const dateA = new Date(`${monthA}/${dayA}/${yearA}`);
+          const dateB = new Date(`${monthB}/${dayB}/${yearB}`);
+          return dateB - dateA;
+        });
 
         // Iterate over each date
-        dates.forEach((date) => {
+        allDates.forEach((date) => {
           const clockInEntry = clockInData.find(
             (entry) => entry.userID === userID && entry.Date === date
           );
