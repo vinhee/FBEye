@@ -38,7 +38,7 @@
 
   <body>
     <header style="display: flex; margin-top: 20px">
-      <a href="home.html"><img src="images/FBEYE.png" class="logo-img" /></a>
+      <a href="homeE.html"><img src="images/FBEYE.png" class="logo-img" /></a>
 
       <input type="checkbox" id="nav_check" hidden />
       <nav>
@@ -70,8 +70,20 @@
             </tr>
           </thead>
 
+          <!--original codes for table-->
           <tbody id="myTableBody">
-            <!-- Attendance records will be inserted here dynamically -->
+            <!--sample-->
+            <!-- <tr>
+                            <td> 1 </td>
+                            <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
+                            <td> Sales </td>
+                            <td> 17 Dec, 2022 </td>
+                            <td> 08:44:52 AM </td>
+                            <td> 05:55:07 PM </td>
+                            <td>
+                                <p class="status present">Present</p>
+                            </td>
+                        </tr> -->
           </tbody>
         </table>
       </section>
@@ -129,84 +141,84 @@
       const app = initializeApp(firebaseConfig);
       const db = getDatabase();
       const storage = getStorage();
-
       const userID = sessionStorage.getItem("employeeUID");
 
-      function AddAllItemsToTable(clockInData, clockOutData, employeeDetails) {
+      function AddAllItemsToTable(
+        clockInData,
+        clockOutData,
+        employeesDetails,
+        employeeLeaveData
+      ) {
         const tableBody = document.getElementById("myTableBody");
         let tableContent = "";
 
-        // Filter data for the specific user
-        const userClockInData = clockInData.filter(
-          (entry) => entry.userID === userID
-        );
-        const userClockOutData = clockOutData.filter(
-          (entry) => entry.userID === userID
+        // Find the logged-in user's employee detail
+        const employeeDetail = employeesDetails.find(
+          (detail) => detail.userID === userID
         );
 
-        // Check if the user has any ClockIn entries
-        const hasClockInEntries = userClockInData.length > 0;
-
-        // Define getClockOutTime function
-        function getClockOutTime(clockOutData, date) {
-          const entry = clockOutData.find((outEntry) => outEntry.Date === date);
-          return entry ? entry.ClockOutTime : null;
+        if (!employeeDetail) {
+          // If no employee detail is found for the logged-in user, clear the table or show a message
+          tableBody.innerHTML =
+            "<tr><td colspan='7'>No records found.</td></tr>";
+          return;
         }
 
-        // Iterate over dates
-        userClockInData.forEach((entry) => {
-          const clockOutTime = getClockOutTime(userClockOutData, entry.Date);
-          const attendanceStatus = getAttendanceStatus(
-            entry.ClockInTime,
-            clockOutTime
+        // Create a set of dates to iterate over (this example uses the dates found in clockInData, but you might need a more comprehensive list)
+        const dates = Array.from(
+          new Set(clockInData.map((entry) => entry.Date))
+        ).sort();
+
+        // Iterate over each date
+        dates.forEach((date) => {
+          const clockInEntry = clockInData.find(
+            (entry) => entry.userID === userID && entry.Date === date
+          );
+          const clockOutEntry = clockOutData.find(
+            (entry) => entry.userID === userID && entry.Date === date
           );
 
+          let status = "";
+          if (clockInEntry) {
+            status = "Present";
+          } else {
+            // Check for leave data before marking as absent
+            const leaveEntry = employeeLeaveData.find(
+              (entry) => entry.userID === userID && entry.Date === date
+            );
+            if (leaveEntry) {
+              status = "On Leave"; // Customize this as per your leave logic
+            } else {
+              status = "Absent";
+            }
+          }
+
           const rowHTML = `<tr>
-      <td>${entry.Date}</td>
-      <td>${entry.ClockInTime || "-"}</td>
-      <td>${clockOutTime || "-"}</td>
-      <td>
-        <p class="status ${attendanceStatus}">${attendanceStatus}</p>
-      </td>
-    </tr>`;
+       
+        <td>${date}</td>
+        <td>${clockInEntry ? clockInEntry.ClockInTime : "-"}</td>
+        <td>${clockOutEntry ? clockOutEntry.ClockOutTime : "-"}</td>
+        <td><p class="status ${status.toLowerCase()}">${status}</p></td>
+      </tr>`;
 
           tableContent += rowHTML;
         });
-
-        // If the user has no ClockIn entries, mark them as Absent
-        if (!hasClockInEntries) {
-          const today = new Date().toISOString().slice(0, 10);
-          const rowHTML = `<tr>
-      <td>${today}</td>
-      <td>-</td>
-      <td>-</td>
-      <td>
-        <p class="status Absent">Absent</p>
-      </td>
-    </tr>`;
-          tableContent += rowHTML;
-        }
 
         // Update the table body with the generated content
         tableBody.innerHTML = tableContent;
       }
 
-      function getAttendanceStatus(clockInTime, clockOutTime) {
-        if (clockInTime) {
-          return "Present";
-        } else if (clockOutTime) {
-          return "Absent (Clock In Missed)";
-        } else {
-          return "Absent";
-        }
-      }
-
       function GetAllDataRealTime() {
         const clockInRef = ref(db, "ClockInLog");
         const clockOutRef = ref(db, "ClockOutLog");
+        const employeeLeaveRef = ref(db, "EmployeeLeave");
 
-        Promise.all([get(clockInRef), get(clockOutRef)]).then(
-          ([clockInSnapshot, clockOutSnapshot]) => {
+        Promise.all([
+          get(clockInRef),
+          get(clockOutRef),
+          get(employeeLeaveRef),
+        ]).then(
+          ([clockInSnapshot, clockOutSnapshot, employeeLeaveSnapshot]) => {
             const clockInData = [];
             clockInSnapshot.forEach((dateSnapshot) => {
               dateSnapshot.forEach((childSnapshot) => {
@@ -231,6 +243,19 @@
               });
             });
 
+            const employeeLeaveData = [];
+
+            employeeLeaveSnapshot.forEach((userSnapshot) => {
+              userSnapshot.forEach((entrySnapshot) => {
+                const leaveID = entrySnapshot.key; // Assuming leaveid is stored as the key
+                const entry = {
+                  leaveID: leaveID,
+                  ...entrySnapshot.val(), // Include other details from the entry
+                };
+                employeeLeaveData.push(entry);
+              });
+            });
+
             // Retrieve additional details about employees from the Employees node
             const employeesDetailsRef = ref(db, "Employees");
             get(employeesDetailsRef).then((detailsSnapshot) => {
@@ -238,14 +263,19 @@
               detailsSnapshot.forEach((employeeSnapshot) => {
                 employeesDetails.push(employeeSnapshot.val());
               });
-
-              AddAllItemsToTable(clockInData, clockOutData, employeesDetails);
+              AddAllItemsToTable(
+                clockInData,
+                clockOutData,
+                employeesDetails,
+                employeeLeaveData
+              );
             });
           }
         );
       }
 
       GetAllDataRealTime();
+      // window.onload = GetAllDataRealTime;
     </script>
   </body>
 </html>
