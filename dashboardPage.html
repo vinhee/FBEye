@@ -57,14 +57,30 @@
         <div></div>
       </label>
     </header>
+    
     <main>
 
-      <iframe
+      <div class="d-flex justify-content-center">
+        <iframe
         src="https://dashboard-zgixirjwd6k8ocpko5acry.streamlit.app/?embed=true"
-        height="450"
-        width="100%"
-      ></iframe>
+        style="
+        min-height:100vh;
+        width:100%;
+        margin: 50px;"
+        ></iframe>
 
+      </div>
+
+
+      <section class="container">
+        <h3 class="subhead" style="margin-bottom: 50px;">
+          Live Camera Feed
+        </h3>
+        <div class="d-flex justify-content-center">
+          <img src="http://192.168.68.115:5000/live_feed" width="640" height="480">
+        </div>
+
+      </section>
 
     </main>
 
