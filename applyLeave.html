@@ -160,6 +160,11 @@
         hour12: false
       });
     }
+    
+    function formatDate(dateStr) {
+    const [year, month, day] = dateStr.split('-');
+    return `${day}-${month}-${year}`;
+    }
 
 
       $(document).ready(function(){
@@ -204,6 +209,11 @@
                 var startDate = document.getElementById("startDate").value.trim();
                 var endDate = document.getElementById("endDate").value.trim();
 
+              // Reformatting the dates
+              var formattedStartDate = formatDate(startDate);
+              var formattedEndDate = formatDate(endDate);
+
+                
                 if (mcNo === "" || medicalCentre === "") {
                     alert("Please enter both the MC Number and the Name of the Clinic/Hospital");
                     return;
@@ -230,12 +240,12 @@
                     LeaveID : uniqueId,
                     Name: sessionStorage.getItem("employeeName"),
                     Employeeid: sessionStorage.getItem("employeeID"),
-                    StartDate: document.getElementById("startDate").value,
-                    EndDate: document.getElementById("endDate").value,
+                    StartDate: formattedStartDate,
+                    EndDate: formattedEndDate,
                     MCNo: document.getElementById("MCno").value,
                     MedicalCentre: document.getElementById("medicalCentre").value,
                     SubmitDate: formatDateTime(Date.now()),
-                    ApprovalStatus: "pending",
+                    ApprovalStatus: "Pending",
                     AbsenceReason: "Medical Leave",
                     userID: sessionStorage.getItem("employeeUID"),
                     Department: sessionStorage.getItem("employDepartment")
@@ -268,6 +278,9 @@
                 var startDate = document.getElementById("startDate").value.trim();
                 var endDate = document.getElementById("endDate").value.trim();
 
+                var formattedStartDate = formatDate(startDate);
+                var formattedEndDate = formatDate(endDate);
+
                 if(leave === ""){
                     alert("Please enter the reason for leave");
                     return;
@@ -283,11 +296,11 @@
                         LeaveID: uniqueId,
                         Name: sessionStorage.getItem("employeeName"), // Use sessionStorage
                         Employeeid: sessionStorage.getItem("employeeID"), // Use sessionStorage
-                        StartDate: document.getElementById("startDate").value,
-                        EndDate: document.getElementById("endDate").value,
+                        StartDate: formattedStartDate,
+                        EndDate: formattedEndDate,
                         Leave: document.getElementById("leave").value,
                         SubmitDate: formatDateTime(Date.now()),
-                        ApprovalStatus: "pending",
+                        ApprovalStatus: "Pending",
                         AbsenceReason: "Leave Request",
                         userID: sessionStorage.getItem("employeeUID"),
                         Department: sessionStorage.getItem("employDepartment")

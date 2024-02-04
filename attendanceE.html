@@ -158,7 +158,6 @@
         const allDates = Array.from(
           new Set(clockInData.map((entry) => entry.Date))
         ).sort((a, b) => {
-          // Convert date strings from dd-mm-yyyy to mm-dd-yyyy
           const [dayA, monthA, yearA] = a.split("-");
           const [dayB, monthB, yearB] = b.split("-");
           const dateA = new Date(`${monthA}/${dayA}/${yearA}`);
@@ -166,7 +165,7 @@
           return dateB - dateA;
         });
 
-        // Iterate over sorted dates and sort by time within each date
+        // Iterate over sorted dates
         allDates.forEach((date) => {
           const dailyEntries = employeesDetails.map((employeeDetails) => {
             const userID = employeeDetails.userID;
@@ -179,25 +178,22 @@
               (entry) => entry.userID === userID && entry.Date === date
             );
 
-            // Find leave entry matching the date
+            // Check for leave entries that match the date and are approved
             const leaveEntry = employeeLeaveData.find(
               (entry) =>
                 entry.userID === userID &&
-                new Date(entry.StartDate).toLocaleDateString() <=
-                  new Date(date).toLocaleDateString() &&
-                new Date(entry.EndDate).toLocaleDateString() >=
-                  new Date(date).toLocaleDateString() &&
+                new Date(entry.StartDate) <= new Date(date) &&
+                new Date(entry.EndDate) >= new Date(date) &&
                 entry.ApprovalStatus === "Approved"
             );
 
-            // Update status based on clock in and out entries and leave reason
+            // Determine the status based on clock in/out entries and leave
             let status = "";
             if (leaveEntry) {
-              if (leaveEntry.LeaveReason === "Medical Leave") {
-                status = "Medical Leave";
-              } else {
-                status = "On Leave";
-              }
+              status =
+                leaveEntry.LeaveReason === "Medical Leave"
+                  ? "Medical Leave"
+                  : "On Leave";
             } else {
               status = clockInEntry ? "Present" : "Absent";
             }
@@ -223,22 +219,18 @@
           // Generate table rows for the sorted entries
           dailyEntries.forEach((entry) => {
             const rowHTML = `<tr>
-                <td>${entry.EmployeeID}</td>
-                <td><img name="${
-                  entry.userID
-                }_pp" src="/images/profile.png" alt="${
+          <td>${entry.EmployeeID}</td>
+          <td><img name="${entry.userID}_pp" src="/images/profile.png" alt="${
               entry.Name
             }_profile_picture">${entry.Name}</td>
-                <td>${entry.Department}</td>
-                <td>${date}</td>
-                <td>${entry.clockInTime || "-"}</td>
-                <td>${entry.clockOutTime || "-"}</td>
-                <td>
-                  <p class="status ${entry.status.toLowerCase()}">${
-              entry.status
-            }</p>
-                </td>
-              </tr>`;
+          <td>${entry.Department}</td>
+          <td>${date}</td>
+          <td>${entry.clockInTime || "-"}</td>
+          <td>${entry.clockOutTime || "-"}</td>
+          <td>
+            <p class="status ${entry.status.toLowerCase()}">${entry.status}</p>
+          </td>
+        </tr>`;
 
             tableContent += rowHTML;
           });
