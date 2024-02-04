@@ -15,7 +15,7 @@
   <body>
 
     <header style="display: flex; margin-top: 20px;">
-        <a href="home.html"><img src="images/FBEYE.png" class="logo-img"></a>
+        <img src="images/FBEYE.png" class="logo-img" >
         </div>
         <input type="checkbox" id="nav_check" hidden>
         <nav>
@@ -55,14 +55,16 @@
     </div>
 
     <script>
-      document.getElementById("homepage").onclick = function(){
-      if (sessionStorage.getItem("employRole") == "Employee") {
-            window.location.href = "home.html";
-          }
-          else if (sessionStorage.getItem("employRole") == "Employer") {
-            window.location.href = "homeE.html";
-          }
-    }
+     function redirectToHomePage() {
+        if (sessionStorage.getItem("employRole") === "Employee") {
+          window.location.href = "home.html";
+        } else if (sessionStorage.getItem("employRole") === "Employer") {
+          window.location.href = "homeE.html";
+        }
+      }
+
+      document.getElementById("homepage").onclick = redirectToHomePage;
+
       const firebaseConfig = {
          apiKey: "AIzaSyAQDU7-hbWtI3sa3s3woi4YfUJtiVRYhGg",
          authDomain: "fbeye-bf2f1.firebaseapp.com",

@@ -38,7 +38,7 @@
 
   <body>
     <header style="display: flex; margin-top: 20px">
-      <a href="homeE.html"><img src="images/FBEYE.png" class="logo-img" /></a>
+      <img src="images/FBEYE.png" class="logo-img" />
 
       <input type="checkbox" id="nav_check" hidden />
       <nav>
@@ -57,33 +57,24 @@
         <div></div>
       </label>
     </header>
-    
-    <main>
 
+    <main>
       <div class="d-flex justify-content-center">
         <iframe
-        src="https://dashboard-zgixirjwd6k8ocpko5acry.streamlit.app/?embed=true"
-        style="
-        min-height:100vh;
-        width:100%;
-        margin: 50px;"
+          src="https://dashboard-zgixirjwd6k8ocpko5acry.streamlit.app/?embed=true"
+          style="min-height: 100vh; width: 100%; margin: 50px"
         ></iframe>
-
       </div>
 
-
       <section class="container">
-        <h3 class="subhead" style="margin-bottom: 50px;">
-          Live Camera Feed
-        </h3>
+        <h3 class="subhead" style="margin-bottom: 50px">Live Camera Feed</h3>
         <div class="d-flex justify-content-center m-5">
-          <img src="http://192.168.68.115:5000/live_feed" style="min-height:500px;
-          width:100%;
-          margin: 50px;">
+          <img
+            src="http://192.168.68.115:5000/live_feed"
+            style="min-height: 500px; width: 100%; margin: 50px"
+          />
         </div>
-
       </section>
-
     </main>
 
     <script
@@ -106,3 +97,5 @@
       type="module"
       src="https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js"
     ></script>
+  </body>
+</html>
