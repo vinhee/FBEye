@@ -186,13 +186,12 @@
                 new Date(entry.EndDate) >= new Date(date) &&
                 entry.ApprovalStatus === "Approved"
             );
-            console.log(leaveEntry)
 
             // Determine the status based on clock in/out entries and leave
             let status = "";
             if (leaveEntry) {
               status =
-                leaveEntry.AbsenceReason
+                leaveEntry.AbsenceReason;
             } else {
               status = clockInEntry ? "Present" : "Absent";
             }
