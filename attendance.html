@@ -178,8 +178,9 @@
 
         // Iterate over each date
         allDates.forEach((date) => {
+          console.log(clockInData)
           const clockInEntry = clockInData.find(
-            (entry) => entry.userID === userID && entry.Date === date
+            (entry) => entry.userID === userID && entry.Date === date,
           );
           const clockOutEntry = clockOutData.find(
             (entry) => entry.userID === userID && entry.Date === date
@@ -191,10 +192,10 @@
           } else {
             // Check for leave data before marking as absent
             const leaveEntry = employeeLeaveData.find(
-              (entry) => entry.userID === userID && entry.Date === date
+              (entry) => entry.userID === userID && entry.StartDate === date,
             );
             if (leaveEntry) {
-              status = "On Leave"; // Customize this as per your leave logic
+              status = leaveEntry.AbsenceReason; // Customize this as per your leave logic
             } else {
               status = "Absent";
             }
@@ -218,7 +219,7 @@
       function GetAllDataRealTime() {
         const clockInRef = ref(db, "ClockInLog");
         const clockOutRef = ref(db, "ClockOutLog");
-        const employeeLeaveRef = ref(db, "EmployeeLeave");
+        const employeeLeaveRef = ref(db, "EmployeeLeave")
 
         Promise.all([
           get(clockInRef),
@@ -252,16 +253,12 @@
 
             const employeeLeaveData = [];
 
-            employeeLeaveSnapshot.forEach((userSnapshot) => {
-              userSnapshot.forEach((entrySnapshot) => {
-                const leaveID = entrySnapshot.key; // Assuming leaveid is stored as the key
-                const entry = {
-                  leaveID: leaveID,
-                  ...entrySnapshot.val(), // Include other details from the entry
-                };
+            const data = employeeLeaveSnapshot.val();
+              
+              for (const [key, entry] of Object.entries(data)) {
                 employeeLeaveData.push(entry);
-              });
-            });
+              }
+
 
             // Retrieve additional details about employees from the Employees node
             const employeesDetailsRef = ref(db, "Employees");
