@@ -186,14 +186,13 @@
                 new Date(entry.EndDate) >= new Date(date) &&
                 entry.ApprovalStatus === "Approved"
             );
+            console.log(leaveEntry)
 
             // Determine the status based on clock in/out entries and leave
             let status = "";
             if (leaveEntry) {
               status =
-                leaveEntry.LeaveReason === "Medical Leave"
-                  ? "Medical Leave"
-                  : "On Leave";
+                leaveEntry.AbsenceReason
             } else {
               status = clockInEntry ? "Present" : "Absent";
             }
@@ -295,16 +294,11 @@
 
             const employeeLeaveData = [];
 
-            employeeLeaveSnapshot.forEach((userSnapshot) => {
-              userSnapshot.forEach((entrySnapshot) => {
-                const leaveID = entrySnapshot.key; // Assuming leaveid is stored as the key
-                const entry = {
-                  leaveID: leaveID,
-                  ...entrySnapshot.val(), // Include other details from the entry
-                };
+            const data = employeeLeaveSnapshot.val();
+              
+              for (const [key, entry] of Object.entries(data)) {
                 employeeLeaveData.push(entry);
-              });
-            });
+              }
 
             // Retrieve additional details about employees from the Employees node
             const employeesDetailsRef = ref(db, "Employees");
