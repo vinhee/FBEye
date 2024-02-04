@@ -174,6 +174,10 @@
       closeModal();
     });
 
+    function formatDateToInput(dateString) {
+      const [day, month, year] = dateString.split("-");
+      return `${year}-${month}-${day}`;
+    }
     
     get(employeeRef).then((snapshot) => {
       const employeeData = snapshot.val();
@@ -181,8 +185,8 @@
       document.getElementById("leaveRequest").value = employeeData.AbsenceReason;
       document.getElementById("employeeName").value = employeeData.Name;
       document.getElementById("employeeID").value = employeeData.Employeeid;
-      document.getElementById("startDate").value = employeeData.StartDate;
-      document.getElementById("endDate").value = employeeData.EndDate;
+      document.getElementById("startDate").value = formatDateToInput(employeeData.StartDate);
+      document.getElementById("endDate").value = formatDateToInput(employeeData.EndDate);
 
       $("#employeeName").html(`
         <span> Employee Name</span>
